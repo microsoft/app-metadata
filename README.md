@@ -1,80 +1,72 @@
-# Skeleton: 
+# Description
 
 This library provides extraction for iOS, Android and Windows packages.
 
 ## Usage 
 
-add to packages
-```
-@skeleton/skeleton-extract-package": "~0.0.1"
-```
-
-import
-```
-import { Extract } from '@skeleton/skeleton-extract-package';
-```
-
-usage
 ```
 let results = await Extract.run(pathName);
 ```
-## Results 
+This library relies on the standard set of file extensions to determine the type of package it is analyzing.
 
-depending on which type of app you extract, you'll recieve slightly different return objects. 
-Parenthesis give some context to what the fields mean, and the rest is the location that the info is pulled from
+## Results 
 
 IPA
 ```
-icon and iconName speak for themselves
-languages = array of language strings compiled from .lproj files
-hasProvisioning = should always be true since IPA will contain a provisioning profile
-appex_provisioning_profiles = array of all other provisioning profiles included in the metadata
+icon
+iconName
+languages
+hasProvisioning
+appex_provisioning_profiles
 ```
+
 - from Plist (info.plist):
 ```
-displayName =  CFBundleDisplayName (The user-visible name of the bundle) || CFBundleName (short bundle name)
-uniqueIdentifier =  CFBundleIdentifier (reverse DNS that identifies a project by concatenating the company identifier with the product name)
-version =  CFBundleShortVersionString (The release-version-number string for the bundle)
-buildVersion = CFBundleVersion (The build-version-number string for the bundle)
-executableName =  CFBundleExecutable (Name of the bundle’s executable file)
-minimumOsVersion =  MinimumOSVersion || LSMinimumSystemVersion
-deviceFamily = UIdeviceFamily;
+displayName
+CFBundleDisplayName
+uniqueIdentifier
+version
+buildVersion
+executableName
+minimumOsVersion
+deviceFamily
 ```
 - from Provisioning Profile (embedded.mobileprovision):
 ```
-pathName = path of the provisioning profile from inside of the IPA
-mobileProvisionFileContent = provisioning profile content
-teamIdentifier = Entitlements["com.apple.developer.team-identifier"] (team ID number for recognizing who build || who can work on this app)
-profileType = if data.ProvisionedDevices exists, "adhoc". Otherwise "enterprise"
-expiredAt = expired_at || ExpirationDate 
-idName = AppIDName 
-name = Name
-UniqueDeviceIdentifierList = ProvisionedDevices 
-deviceFamily = Platform
+pathName
+mobileProvisionFileContent
+teamIdentifier
+profileType
+expiredAt
+idName
+name
+UniqueDeviceIdentifierList
+deviceFamily
 ```
 
 APK
 - from Manifest:
 ```
-iconName, icon - requires searching through a ton of different folders, no good way afaik
-uniqueIdentifier =  package
-version =  versionName
-buildVersion =  versionCode
-minimumOsVersion =  usesSdk.minSdkVersion
-deviceFamily = "android"
+iconName
+icon
+uniqueIdentifier
+version
+buildVersion
+minimumOsVersion
+deviceFamily
 ```
 
 APPX - either uploaded with .appx, appxupload or .zip extension
 - from Manifest:
 ```
-this.deviceFamily = Constants.WINDOWS
-displayName = Package.Properties.DisplayName
-iconFullPath = Package.Properties.Logo
-uniqueIdentifier  =  Package.Identity.Name 
-buildVersion = Package.Identity.Version
-minimumOsVersion = Package.Prerequisites.OSMinVersion || Package.Dependencies.TargetDeviceFamily.MinVersion
-executableName =  Package.Applications.Application.Executable 
-languages = built from - Package.Resources.Resource.Language
+deviceFamily
+displayName
+iconFullPath
+uniqueIdentifier
+buildVersion
+minimumOsVersion
+executableName 
+languages
 ```
 
 
@@ -100,7 +92,7 @@ The assumption for zip and appxUpload is that the unziped folders will have the 
 
 - Install [node](https://nodejs.org/) version [5.11.0](https://nodejs.org/dist/v0.12.7/x64/)
 
-- Install poject dependencies (based on `<REPO ROOT>/package.json`)
+- Install project dependencies (based on `<REPO ROOT>/package.json`)
 	```
     npm install
 	```
