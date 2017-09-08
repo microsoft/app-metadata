@@ -1,6 +1,6 @@
 {
   "name": "app-metadata",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "This library provides functionality to extract IPA, APK and UWP packages.",
   "main": "./index.js",
   "repository": {
