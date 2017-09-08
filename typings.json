@@ -1,0 +1,15 @@
+{
+  "name": "skeleton-crypto",
+  "globalDependencies": {
+  },
+  "globalDevDependencies": {
+    "gulp-istanbul": "registry:dt/gulp-istanbul#0.9.0+20160317120654",
+    "gulp-mocha": "registry:dt/gulp-mocha#0.0.0+20160316155526",
+    "gulp-tslint": "registry:dt/gulp-tslint#3.6.0+20160316155526",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
+    "mocha": "registry:dt/mocha#2.2.5+20160619032855",
+    "nock": "registry:dt/nock#0.54.0+20160907105249",
+    "sinon": "registry:dt/sinon#1.16.0+20160517064723",
+    "vinyl": "registry:dt/vinyl#1.1.0+20160316155526"
+  }
+}

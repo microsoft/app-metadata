@@ -1,0 +1,1 @@
+export { Extract } from './src/extract';

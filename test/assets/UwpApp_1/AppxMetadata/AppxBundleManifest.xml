@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Bundle SchemaVersion="2.0" xmlns="http://schemas.microsoft.com/appx/2013/bundle">
+	<Identity Name="7b8e5825-5039-4f80-b71f-ac8f578f434e" Publisher="CN=crystk" Version="1.1.2.0"/>
+	<Packages>
+		<Package Type="application" Version="1.1.2.0" Architecture="x86" FileName="UwpApp_1.1.2.0_x86.appx" Offset="9033391" Size="3368339">
+			<Resources>
+				<Resource Language="EN-US"/>
+				<Resource Scale="200"/>
+			</Resources>
+		</Package>
+		<Package Type="application" Version="1.1.2.0" Architecture="x64" FileName="UwpApp_1.1.2.0_x64.appx" Offset="5334758" Size="3698556">
+			<Resources>
+				<Resource Language="EN-US"/>
+				<Resource Scale="200"/>
+			</Resources>
+		</Package>
+		<Package Type="application" Version="1.1.2.0" Architecture="arm" FileName="UwpApp_1.1.2.0_ARM.appx" Offset="53" Size="3455830">
+			<Resources>
+				<Resource Language="EN-US"/>
+				<Resource Scale="200"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="1.1.2.0" ResourceId="split.scale-100" FileName="UwpApp_1.1.2.0_scale-100.appx" Offset="3455966" Size="101335">
+			<Resources>
+				<Resource Scale="100"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="1.1.2.0" ResourceId="split.scale-125" FileName="UwpApp_1.1.2.0_scale-125.appx" Offset="3557384" Size="152730">
+			<Resources>
+				<Resource Scale="125"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="1.1.2.0" ResourceId="split.scale-150" FileName="UwpApp_1.1.2.0_scale-150.appx" Offset="3710197" Size="216536">
+			<Resources>
+				<Resource Scale="150"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="1.1.2.0" ResourceId="split.scale-400" FileName="UwpApp_1.1.2.0_scale-400.appx" Offset="3926816" Size="1407865">
+			<Resources>
+				<Resource Scale="400"/>
+			</Resources>
+		</Package>
+	</Packages>
+</Bundle>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIRequiredDeviceCapabilities</key>
+	<dict>
+		<key>armv7</key>
+		<true/>
+	</dict>
+	<key>appleId</key>
+	<string>hannah.gould1@gmail.com</string>
+	<key>appleWatchEnabled</key>
+	<true/>
+	<key>artistId</key>
+	<integer>322380460</integer>
+	<key>artistName</key>
+	<string>Courtney &amp; Company</string>
+	<key>bundleDisplayName</key>
+	<string>Tic Tac Toe</string>
+	<key>bundleShortVersionString</key>
+	<string>5.2</string>
+	<key>bundleVersion</key>
+	<string>14</string>
+	<key>com.apple.iTunesStore.downloadInfo</key>
+	<dict>
+		<key>accountInfo</key>
+		<dict>
+			<key>AccountStoreFront</key>
+			<string>143441-1,32</string>
+			<key>AppleID</key>
+			<string>hannah.gould1@gmail.com</string>
+			<key>DSPersonID</key>
+			<integer>8501309578</integer>
+			<key>DownloaderID</key>
+			<integer>0</integer>
+			<key>FamilyID</key>
+			<integer>0</integer>
+			<key>FirstName</key>
+			<string>hannah</string>
+			<key>LastName</key>
+			<string>gould</string>
+			<key>PurchaserID</key>
+			<integer>8501309578</integer>
+			<key>UserName</key>
+			<string>hannah gould</string>
+		</dict>
+		<key>purchaseDate</key>
+		<string>2017-06-15T04:20:15Z</string>
+	</dict>
+	<key>copyright</key>
+	<string>© Courtney &amp; Company</string>
+	<key>drmVersionNumber</key>
+	<integer>0</integer>
+	<key>fileExtension</key>
+	<string>.app</string>
+	<key>gameCenterEnabled</key>
+	<false/>
+	<key>gameCenterEverEnabled</key>
+	<false/>
+	<key>genre</key>
+	<string>Games</string>
+	<key>genreId</key>
+	<integer>6014</integer>
+	<key>itemId</key>
+	<integer>333178201</integer>
+	<key>itemName</key>
+	<string>Tic Tac Toe 3-in-a-row</string>
+	<key>kind</key>
+	<string>software</string>
+	<key>playlistName</key>
+	<string>Courtney &amp; Company</string>
+	<key>product-type</key>
+	<string>ios-app</string>
+	<key>purchaseDate</key>
+	<date>2017-06-15T04:20:15Z</date>
+	<key>rating</key>
+	<dict>
+		<key>content</key>
+		<string>Advisory.NO.GAMBLING_CONTESTS and Advisory.NO.UNRESTRICTED_WEB_ACCESS</string>
+		<key>label</key>
+		<string>4+</string>
+		<key>rank</key>
+		<integer>100</integer>
+		<key>system</key>
+		<string>itunes-games</string>
+	</dict>
+	<key>releaseDate</key>
+	<string>2009-10-01T17:48:32Z</string>
+	<key>s</key>
+	<integer>143441</integer>
+	<key>softwareIcon57x57URL</key>
+	<string>http://a300.phobos.apple.com/us/r30/Purple111/v4/69/f5/af/69f5afc5-9e04-ce2f-9663-03fcae4d117f/icon114x114.png</string>
+	<key>softwareIconNeedsShine</key>
+	<false/>
+	<key>softwareSupportedDeviceIds</key>
+	<array>
+		<integer>9</integer>
+		<integer>2</integer>
+		<integer>4</integer>
+	</array>
+	<key>softwareVersionBundleId</key>
+	<string>com.EverybodyLovesCourtney.TicTacToe</string>
+	<key>softwareVersionExternalIdentifier</key>
+	<integer>821310440</integer>
+	<key>softwareVersionExternalIdentifiers</key>
+	<array>
+		<integer>1996603</integer>
+		<integer>3013443</integer>
+		<integer>3514599</integer>
+		<integer>812050844</integer>
+		<integer>812690907</integer>
+		<integer>813152482</integer>
+		<integer>813770204</integer>
+		<integer>813770235</integer>
+		<integer>813789977</integer>
+		<integer>813791599</integer>
+		<integer>820173586</integer>
+		<integer>820584684</integer>
+		<integer>820721178</integer>
+		<integer>821310440</integer>
+	</array>
+	<key>storeCohort</key>
+	<string>7|date=1497499200000&amp;sf=143441&amp;pgtp=Search&amp;pgid=2edf6b5f-88ae-4da9-bed4-6b9b00f26712&amp;prpg=Genre_25204</string>
+	<key>subgenres</key>
+	<array>
+		<dict>
+			<key>genre</key>
+			<string>Board</string>
+			<key>genreId</key>
+			<integer>7004</integer>
+		</dict>
+		<dict>
+			<key>genre</key>
+			<string>Strategy</string>
+			<key>genreId</key>
+			<integer>7017</integer>
+		</dict>
+	</array>
+	<key>userName</key>
+	<string>hannah gould</string>
+	<key>vendorId</key>
+	<integer>276696</integer>
+	<key>versionRestrictions</key>
+	<integer>16843008</integer>
+</dict>
+</plist>

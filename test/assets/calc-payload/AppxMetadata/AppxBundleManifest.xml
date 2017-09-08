@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Bundle SchemaVersion="2.0" xmlns="http://schemas.microsoft.com/appx/2013/bundle">
+	<Identity Name="61908RichardWalters.Calculator" Publisher="CN=7F1FCF7B-F6E8-4035-9C99-ACAE1F9A853D" Version="2016.1003.2115.0"/>
+	<Packages>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-de" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-de.appx" Offset="2459417" Size="46282">
+			<Resources>
+				<Resource Language="de"/>
+				<Resource Language="de-de"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-es" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-es.appx" Offset="2505811" Size="44696">
+			<Resources>
+				<Resource Language="es"/>
+				<Resource Language="es-es"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-fr" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-fr.appx" Offset="2550619" Size="44885">
+			<Resources>
+				<Resource Language="fr"/>
+				<Resource Language="fr-fr"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-hu" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-hu.appx" Offset="2595616" Size="44176">
+			<Resources>
+				<Resource Language="hu"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-it" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-it.appx" Offset="2639904" Size="44700">
+			<Resources>
+				<Resource Language="it"/>
+				<Resource Language="it-it"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-nl" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-nl.appx" Offset="2684716" Size="43948">
+			<Resources>
+				<Resource Language="nl"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-pl" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-pl.appx" Offset="2728776" Size="44232">
+			<Resources>
+				<Resource Language="pl"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-pt" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-pt.appx" Offset="2773120" Size="44199">
+			<Resources>
+				<Resource Language="pt"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-ru" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-ru.appx" Offset="2817431" Size="45121">
+			<Resources>
+				<Resource Language="ru"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-tr" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-tr.appx" Offset="2862664" Size="43619">
+			<Resources>
+				<Resource Language="tr"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-uk" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-uk.appx" Offset="2906395" Size="44440">
+			<Resources>
+				<Resource Language="uk"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.language-zh-hans" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_language-zh-hans.appx" Offset="2950952" Size="41893">
+			<Resources>
+				<Resource Language="zh-hans"/>
+				<Resource Language="zh-cn"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.scale-100" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_scale-100.appx" Offset="2992955" Size="39004">
+			<Resources>
+				<Resource Scale="100"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.scale-140" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_scale-140.appx" Offset="3032069" Size="41836">
+			<Resources>
+				<Resource Scale="140"/>
+			</Resources>
+		</Package>
+		<Package Type="resource" Version="2016.1003.2147.0" ResourceId="split.scale-180" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_scale-180.appx" Offset="3074015" Size="30964">
+			<Resources>
+				<Resource Scale="180"/>
+			</Resources>
+		</Package>
+		<Package Type="application" Version="2016.1003.2147.0" Architecture="arm" FileName="Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx" Offset="80" Size="2459225">
+			<Resources>
+				<Resource Language="EN"/>
+				<Resource Scale="240"/>
+			</Resources>
+		</Package>
+	</Packages>
+</Bundle>

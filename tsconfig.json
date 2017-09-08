@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "noEmitOnError": true,
+        "preserveConstEnums": true,
+        "moduleResolution": "node", 
+        "rootDir": "./",
+        "sourceMap": true,
+        "outDir": "./out",
+        "declaration": true
+  }
+}
