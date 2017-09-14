@@ -100,8 +100,7 @@ Supported extensions: .appx, appxupload or .zip
 Supported extensions: .appxbundle, appxupload or .zip
 ```
 
-for .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage.
-	if it is found, the metadata is parsed directly from there, otherwise you scavenge for as much as you can get from the appxbundle manifest and metadata
+> For .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle manifest and metadata
 
 | Property        | Description           |
 | ------------- |:--------------|
@@ -110,7 +109,7 @@ for .appxbundle app packages, the manifest is checked for the correct name of th
 | iconAppx      | Name of the zipped file within the package that contains icons |
 | languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
 
-- from Manifest:
+- ##### from Manifest:
 
 | Property        | Description           |
 | ------------- |:--------------|
