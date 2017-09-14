@@ -81,7 +81,7 @@ Supported extension: .apk
 Supported extensions: .appx, appxupload or .zip
 ```
 
-- ##### from Manifest:
+##### from Manifest:
 
 | Property        | Description           |
 | ------------- |:--------------|
@@ -109,7 +109,7 @@ Supported extensions: .appxbundle, appxupload or .zip
 | iconAppx      | Name of the zipped file within the package that contains icons |
 | languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
 
-- ##### from Manifest:
+##### from Manifest:
 
 | Property        | Description           |
 | ------------- |:--------------|
@@ -157,13 +157,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-- If it's
-	- Larger than a bug fix - create a feature branch (`feature/<SOME NAME>`) and work on this branch. While on your feature branch you are free to use self-defined rules. When your feature is complete (coded _and_ tested) create a pull request for `develop`.
-	
-	- A bug fix - fix it on `develop`
-	
-	- Smaller than a bug fix - nope
-
 - Ensure that it builds
 	- Via `gulp`
 		```
@@ -175,8 +168,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 		```
 		cd <REPO ROOT>
 		gulp test
-		```	
-- Pull requests to `develop` are required but require no aproval to merge. Use best judgement.
+		```
 
 ## Developing on OS X ##
 
