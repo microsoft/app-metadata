@@ -1,6 +1,6 @@
 # Description
 
-This library will help you retrieve the most frequently extracted metadata and icons within an iOS, Android and UWP application.
+This library will help you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
 
 ## Usage 
 
@@ -19,8 +19,10 @@ let results = await Extract.run(pathName);
 ## Results 
 The library will return the information most relevant for the supported platforms. For a better understanding of the details retrieved refer to the tables below.
 
-### IPA
-
+### iOS
+```
+Supported extension: .ipa
+```
 | Property        | Description           |
 | ------------- |:--------------|
 | icon      |  |
@@ -44,52 +46,60 @@ The library will return the information most relevant for the supported platform
 
 - ##### from Provisioning Profile (embedded.mobileprovision):
 
-
 | Property        | Description           |
 | ------------- |:--------------|
-| pathName      |  |
-| mobileProvisionFileContent      |       |
-| teamIdentifier      |  |
-| profileType      |       |
-| expiredAt      |  |
-| idName      |       |
-| name      |  |
-| UniqueDeviceIdentifierList      |       |
-| deviceFamily      |  |
+| pathName      | Path of the provisioning profile from inside of the IPA  |
+| mobileProvisionFileContent      |Provisioning profile content       |
+| teamIdentifier      |Entitlements["com.apple.developer.team-identifier"]  |
+| profileType      | If data.ProvisionedDevices exists, "adhoc". Otherwise "enterprise"       |
+| expiredAt      | expired_at or ExpirationDate  |
+| idName      | AppIDName       |
+| name      | Name |
+| UniqueDeviceIdentifierList      |  ProvisionedDevices      |
+| deviceFamily      | Platform |
 
 
-### APK
+### Android
+```
+Supported extension: .apk
+```
+
 - ##### from Manifest:
 
 | Property        | Description           |
 | ------------- |:--------------|
 | icon      |  |
 | iconName      |       |
-| uniqueIdentifier      |  |
-| version      |       |
-| buildVersion      |  |
-| minimumOsVersion      |       |
-| deviceFamily      |  |
+| uniqueIdentifier      |package   |
+| version      | versionName       |
+| buildVersion      |versionCode  |
+| minimumOsVersion      | usesSdk.minSdkVersion      |
+| deviceFamily      | "android"  |
 
-### APPX 
+### UWP 
+```
+Supported extensions: .appx, appxupload or .zip
+```
 
-either uploaded with .appx, appxupload or .zip extension
 - ##### from Manifest:
 
 | Property        | Description           |
 | ------------- |:--------------|
-| deviceFamily      |  |
-| displayName      |       |
-| iconFullPath      |  |
-| uniqueIdentifier      |       |
-| buildVersion      |  |
-| minimumOsVersion      |       |
-| executableName      |  |
-| languages      |       |
+| deviceFamily      |Constants.WINDOWS  |
+| displayName      | Package.Properties.DisplayName      |
+| iconFullPath      | Package.Properties.Logo |
+| uniqueIdentifier      | Package.Identity.Name       |
+| buildVersion      |Package.Identity.Version  |
+| minimumOsVersion      |Package.Prerequisites.OSMinVersion or Package.Dependencies.TargetDeviceFamily.MinVersion       |
+| executableName      |Package.Applications.Application.Executable   |
+| languages      | Built from Package.Resources.Resource.Language       |
 
 
-### APPXBundle
-- either uploaded with .appxbundle, appxupload or .zip extension
+### UWP Bundles
+```
+Supported extensions: .appxbundle, appxupload or .zip
+```
+
 for .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage.
 	if it is found, the metadata is parsed directly from there, otherwise you scavenge for as much as you can get from the appxbundle manifest and metadata
 
