@@ -1,41 +1,63 @@
-/// <reference path="../typings/index.d.ts"/>
-import { Extract } from "./extract";
-import * as Bluebird from 'bluebird';
-import * as fse from 'fs-extra';
-import { Logger } from './logger';
+/**
+ * A console app to test extraction. 
+ * pre-requisite: 
+ * ```
+ * npm install
+ * gulp build
+ * ```
+ * usage (from project's root): node ./out/src/consoleFlow.js <package's path>
+ */ 
 
-const util = require('util');
-const fs = require('fs');
+import * as Bluebird from 'bluebird';
+import * as util from 'util';
+import * as fs from 'fs-extra';
 global.Promise = <any>Bluebird;
 
-var pathName; 
-var skeletonLogging = require('@skeleton/skeleton-logging');
-const transports = new skeletonLogging.Transports();
-transports.console = { silent: false, level: 'silly', colorize: true, timestamp: true };
-skeletonLogging.LoggerBootstrap.configureDefault(transports, "Extractor");
-skeletonLogging.LoggerBootstrap.updateWinstonToUseRealConsoleLog();
+import { Extract } from "./extract";
+import { Logger, LoggerBootstrap } from './logger';
 
-// this file is used for testing purposes only 
+class Program {
+  packagePath: string;
 
-if(process.argv.length > 2) {
-  pathName = process.argv[2];
-}
-Extract.run(pathName)
-.then( (p) => {
-  Logger.silly(`\nfinished bundle - ${util.inspect(p)}`);
-  // TODO demo
-  fs.writeFile('logo.png', p.icon, function(err){
-      if (err) {
-        throw err;
+  constructor() {
+    LoggerBootstrap.updateWinstonToUseRealConsoleLog();
+  }
+
+  public processArgs() {
+    if(process.argv.length !== 3) {
+      Logger.info("Error: missing argument");
+      Logger.info("usage (run from project's root): node ./out/src/consoleFlow.js <package's path>");
+    } 
+
+    this.packagePath = process.argv[2];
+  }
+
+  public async run() {
+    if (!this.packagePath) {
+      return;
+    }
+
+    try {
+      const content = await Extract.run(this.packagePath);
+      Logger.info('Finished Extraction.');
+      Logger.info(`package information: ${util.inspect(content)}`);
+
+      if (content.icon) {
+        Logger.info('Saving icon to logo.png');
+        await fs.writeFile('logo.png', content.icon);
+        Logger.info('File saved.');
       }
-      Logger.silly('File saved.');
+    } catch (err) {
+      Logger.error('Extraction Failed.');
+      Logger.error(`${util.inspect(err)}`);
+      return;
+    }
+  }
+}
+
+const program = new Program();
+program.processArgs();
+program.run()
+  .then(() => {
+    process.exit();
   });
-})
-.catch((err) => {
-  Bluebird.resolve();
-});
-
-
-
-
-

@@ -31,7 +31,7 @@
 				"protocol": "inspector",
 				"request": "launch",
 				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/package.apk", "true"],
+				"args": ["./packages/package.apk"],
 				"stopOnEntry": false,
 				"sourceMaps": true,
 				"runtimeArgs": [
@@ -45,7 +45,7 @@
 				"protocol": "inspector",
 				"request": "launch",
 				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/adhoc-signed.ipa", "true"],
+				"args": ["./packages/adhoc-signed.ipa"],
 				"stopOnEntry": false,
 				"sourceMaps": true,
 				"runtimeArgs": [
@@ -59,7 +59,7 @@
 				"protocol": "inspector",
 				"request": "launch",
 				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/Meow-INT-1.0-3.ipa", "true"],
+				"args": ["./packages/Meow-INT-1.0-3.ipa"],
 				"stopOnEntry": false,
 				"sourceMaps": true,
 				"runtimeArgs": [
