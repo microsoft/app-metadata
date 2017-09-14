@@ -19,7 +19,7 @@ let results = await Extract.run(pathName);
 ## Results 
 The library will return the information most relevant for the supported platforms. For a better understanding of the details retrieved refer to the tables below.
 
-IPA
+### IPA
 
 | Property        | Description           |
 | ------------- |:--------------|
@@ -29,77 +29,91 @@ IPA
 | hasProvisioning | Should always be true since IPA will contain a provisioning profile      |
 | appex_provisioning_profiles | Array of all other provisioning profiles included in the metadata      |
 
-- from Plist (info.plist):
-```
-displayName
-CFBundleDisplayName
-uniqueIdentifier
-version
-buildVersion
-executableName
-minimumOsVersion
-deviceFamily
-```
-- from Provisioning Profile (embedded.mobileprovision):
-```
-pathName
-mobileProvisionFileContent
-teamIdentifier
-profileType
-expiredAt
-idName
-name
-UniqueDeviceIdentifierList
-deviceFamily
-```
+- ##### from Plist (info.plist):
 
-APK
-- from Manifest:
-```
-iconName
-icon
-uniqueIdentifier
-version
-buildVersion
-minimumOsVersion
-deviceFamily
-```
+| Property        | Description           |
+| ------------- |:--------------|
+| displayName |CFBundleDisplayName (The user-visible name of the bundle) or CFBundleName (short bundle name)  |
+| CFBundleDisplayName      |CFBundleIdentifier (reverse DNS that identifies a project by concatenating the company identifier with the product name)       |
+| uniqueIdentifier | CFBundleShortVersionString (The release-version-number string for the bundle)|
+| version | Should always be true since IPA will contain a provisioning profile      |
+| buildVersion | CFBundleVersion (The build-version-number string for the bundle) |
+| executableName | CFBundleExecutable (Name of the bundle’s executable file) |
+| minimumOsVersion | MinimumOSVersion or LSMinimumSystemVersion |
+| deviceFamily | UIdeviceFamily  |
 
-APPX - either uploaded with .appx, appxupload or .zip extension
-- from Manifest:
-```
-deviceFamily
-displayName
-iconFullPath
-uniqueIdentifier
-buildVersion
-minimumOsVersion
-executableName 
-languages
-```
+- ##### from Provisioning Profile (embedded.mobileprovision):
 
 
-APPXBundle - either uploaded with .appxbundle, appxupload or .zip extension
+| Property        | Description           |
+| ------------- |:--------------|
+| pathName      |  |
+| mobileProvisionFileContent      |       |
+| teamIdentifier      |  |
+| profileType      |       |
+| expiredAt      |  |
+| idName      |       |
+| name      |  |
+| UniqueDeviceIdentifierList      |       |
+| deviceFamily      |  |
+
+
+### APK
+- ##### from Manifest:
+
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| uniqueIdentifier      |  |
+| version      |       |
+| buildVersion      |  |
+| minimumOsVersion      |       |
+| deviceFamily      |  |
+
+### APPX 
+
+either uploaded with .appx, appxupload or .zip extension
+- ##### from Manifest:
+
+| Property        | Description           |
+| ------------- |:--------------|
+| deviceFamily      |  |
+| displayName      |       |
+| iconFullPath      |  |
+| uniqueIdentifier      |       |
+| buildVersion      |  |
+| minimumOsVersion      |       |
+| executableName      |  |
+| languages      |       |
+
+
+### APPXBundle
+- either uploaded with .appxbundle, appxupload or .zip extension
 for .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage.
 	if it is found, the metadata is parsed directly from there, otherwise you scavenge for as much as you can get from the appxbundle manifest and metadata
-```
-iconAppx = the name of the zipped file within the package that contains icons
-icon and iconName speak for themselves
-languages = built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx
-```
+
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| iconAppx      | Name of the zipped file within the package that contains icons |
+| languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
+
 - from Manifest:
-```
-deviceFamily = "windows"
-uniqueIdentifier =  Bundle.Identity.Name
-buildVersion =  Bundle.Identity.Version
-minimumOsVersion = Bundle.Prerequisites.OSMinVersion || Bundle.Dependencies.TargetDeviceFamily
-```
+
+| Property        | Description           |
+| ------------- |:--------------|
+| deviceFamily      |windows  |
+| uniqueIdentifier      |Bundle.Identity.Name       |
+| buildVersion      |Bundle.Identity.Version  |
+| minimumOsVersion      | Bundle.Prerequisites.OSMinVersion or Bundle.Dependencies.TargetDeviceFamily      |
 
 The assumption for zip and appxUpload is that the unziped folders will have the appx or appxbundle which we will then process as we do normally
 
 ## Prerequisites ##
 
-- Install [node](https://nodejs.org/) version [5.11.0](https://nodejs.org/dist/v0.12.7/x64/)
+- Install [node](https://nodejs.org/) version [7.6.0](https://nodejs.org/dist/v0.12.7/x64/)
 
 - Install project dependencies (based on `<REPO ROOT>/package.json`)
 	```
@@ -115,7 +129,7 @@ The assumption for zip and appxUpload is that the unziped folders will have the 
 	```
 - Upgrade [npm](https://www.npmjs.com/package/npm) to version `3.3.x`
 	```
-	npm install -g npm@3.3
+	npm install -g npm@5
 	```
 - Install the IDE
 	- [Visual Studio Code](https://code.visualstudio.com/)
