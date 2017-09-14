@@ -161,7 +161,13 @@ export class IpaContent extends ContentBase {
         }
         this.hasProvisioning = true;
         provision.teamIdentifier = (provisionData.Entitlements && provisionData.Entitlements["com.apple.developer.team-identifier"]) ? provisionData.Entitlements["com.apple.developer.team-identifier"] : null;
-        provision.profileType = provisionData.ProvisionedDevices ? "adhoc" : "enterprise";
+        if (provisionData.ProvisionedDevices) {
+            provision.profileType = "adhoc";
+        } else if (provisionData.ProvisionsAllDevices) {
+            provision.profileType = "enterprise";
+        } else {
+            provision.profileType = "other";
+        }
         provision.expiredAt = provisionData.expired_at ? provisionData.expired_at : null;
         if (!provision.expiredAt) {
             provision.expiredAt = provisionData.ExpirationDate ? provisionData.ExpirationDate : null;
@@ -175,7 +181,7 @@ export class IpaContent extends ContentBase {
         let bundleProvision = this.findFile(fileList, Constants.PROVISIONING);
         this.appexProvisioningProfiles = [];
         for(let file of fileList) {
-            // go through and collect all additional prrovisioning profiles that aren't the basic one
+            // go through and collect all additional provisioning profiles that aren't the basic one
             const pathSplit =  file.split(path.sep);
             if (pathSplit[pathSplit.length - 1] === "embedded.mobileprovision" && file !== bundleProvision) {
                 let appexProvision = new ProvisioningProfile();
