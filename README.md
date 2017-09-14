@@ -1,24 +1,33 @@
 # Description
 
-This library provides extraction for iOS, Android and Windows packages.
+This library will help you retrieve the most frequently extracted metadata and icons within an iOS, Android and UWP application.
 
 ## Usage 
 
+
+#### import
+```
+import { Extract } from 'app-metadata';
+```
+ 
+#### usage
 ```
 let results = await Extract.run(pathName);
 ```
-This library relies on the standard set of file extensions to determine the type of package it is analyzing.
+> This library relies on the standard set of file extensions to determine the type of package it is analyzing.
 
 ## Results 
+The library will return the information most relevant for the supported platforms. For a better understanding of the details retrieved refer to the tables below.
 
 IPA
-```
-icon
-iconName
-languages
-hasProvisioning
-appex_provisioning_profiles
-```
+
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| languages | Array of language strings compiled from .lproj files      |
+| hasProvisioning | Should always be true since IPA will contain a provisioning profile      |
+| appex_provisioning_profiles | Array of all other provisioning profiles included in the metadata      |
 
 - from Plist (info.plist):
 ```
