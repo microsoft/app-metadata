@@ -47,7 +47,6 @@ class Program {
         await fs.writeFile('logo.png', content.icon);
         Logger.info('File saved.');
       }
-
     } catch (err) {
       Logger.error('Extraction Failed.');
       Logger.error(`${util.inspect(err)}`);
