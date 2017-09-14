@@ -1,96 +1,128 @@
 # Description
 
-This library provides extraction for iOS, Android and Windows packages.
+This library helps you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
 
 ## Usage 
 
+
+#### import
+```
+import { Extract } from 'app-metadata';
+```
+ 
+#### usage
 ```
 let results = await Extract.run(pathName);
 ```
-This library relies on the standard set of file extensions to determine the type of package it is analyzing.
+> This library relies on the standard set of file extensions to determine the type of package it is analyzing.
 
 ## Results 
+The library will return the information most relevant for the supported platforms. For a better understanding of the details retrieved refer to the tables below.
 
-IPA
+### iOS
 ```
-icon
-iconName
-languages
-hasProvisioning
-appex_provisioning_profiles
+Supported extension: .ipa
 ```
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| languages | Array of language strings compiled from .lproj files      |
+| hasProvisioning | Should always be true since IPA will contain a provisioning profile      |
+| appex_provisioning_profiles | Array of all other provisioning profiles included in the metadata      |
 
-- from Plist (info.plist):
-```
-displayName
-CFBundleDisplayName
-uniqueIdentifier
-version
-buildVersion
-executableName
-minimumOsVersion
-deviceFamily
-```
-- from Provisioning Profile (embedded.mobileprovision):
-```
-pathName
-mobileProvisionFileContent
-teamIdentifier
-profileType
-expiredAt
-idName
-name
-UniqueDeviceIdentifierList
-deviceFamily
-```
+- ##### from Plist (info.plist):
 
-APK
-- from Manifest:
-```
-iconName
-icon
-uniqueIdentifier
-version
-buildVersion
-minimumOsVersion
-deviceFamily
-```
+| Property        | Description           |
+| ------------- |:--------------|
+| displayName |CFBundleDisplayName (The user-visible name of the bundle) or CFBundleName (short bundle name)  |
+| CFBundleDisplayName      |CFBundleIdentifier (reverse DNS that identifies a project by concatenating the company identifier with the product name)       |
+| uniqueIdentifier | CFBundleShortVersionString (The release-version-number string for the bundle)|
+| version | Should always be true since IPA will contain a provisioning profile      |
+| buildVersion | CFBundleVersion (The build-version-number string for the bundle) |
+| executableName | CFBundleExecutable (Name of the bundle’s executable file) |
+| minimumOsVersion | MinimumOSVersion or LSMinimumSystemVersion |
+| deviceFamily | UIdeviceFamily  |
 
-APPX - either uploaded with .appx, appxupload or .zip extension
-- from Manifest:
-```
-deviceFamily
-displayName
-iconFullPath
-uniqueIdentifier
-buildVersion
-minimumOsVersion
-executableName 
-languages
-```
+- ##### from Provisioning Profile (embedded.mobileprovision):
+
+| Property        | Description           |
+| ------------- |:--------------|
+| pathName      | Path of the provisioning profile from inside of the IPA  |
+| mobileProvisionFileContent      |Provisioning profile content       |
+| teamIdentifier      |Entitlements["com.apple.developer.team-identifier"]  |
+| profileType      | If data.ProvisionedDevices exists, "adhoc". Otherwise "enterprise"       |
+| expiredAt      | expired_at or ExpirationDate  |
+| idName      | AppIDName       |
+| name      | Name |
+| UniqueDeviceIdentifierList      |  ProvisionedDevices      |
+| deviceFamily      | Platform |
 
 
-APPXBundle - either uploaded with .appxbundle, appxupload or .zip extension
-for .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage.
-	if it is found, the metadata is parsed directly from there, otherwise you scavenge for as much as you can get from the appxbundle manifest and metadata
+### Android
 ```
-iconAppx = the name of the zipped file within the package that contains icons
-icon and iconName speak for themselves
-languages = built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx
+Supported extension: .apk
 ```
-- from Manifest:
+
+- ##### from Manifest:
+
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| uniqueIdentifier      |package   |
+| version      | versionName       |
+| buildVersion      |versionCode  |
+| minimumOsVersion      | usesSdk.minSdkVersion      |
+| deviceFamily      | "android"  |
+
+### UWP 
 ```
-deviceFamily = "windows"
-uniqueIdentifier =  Bundle.Identity.Name
-buildVersion =  Bundle.Identity.Version
-minimumOsVersion = Bundle.Prerequisites.OSMinVersion || Bundle.Dependencies.TargetDeviceFamily
+Supported extensions: .appx, appxupload or .zip
 ```
+
+- ##### from Manifest:
+
+| Property        | Description           |
+| ------------- |:--------------|
+| deviceFamily      |Constants.WINDOWS  |
+| displayName      | Package.Properties.DisplayName      |
+| iconFullPath      | Package.Properties.Logo |
+| uniqueIdentifier      | Package.Identity.Name       |
+| buildVersion      |Package.Identity.Version  |
+| minimumOsVersion      |Package.Prerequisites.OSMinVersion or Package.Dependencies.TargetDeviceFamily.MinVersion       |
+| executableName      |Package.Applications.Application.Executable   |
+| languages      | Built from Package.Resources.Resource.Language       |
+
+
+### UWP Bundles
+```
+Supported extensions: .appxbundle, appxupload or .zip
+```
+
+> For .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle manifest and metadata
+
+| Property        | Description           |
+| ------------- |:--------------|
+| icon      |  |
+| iconName      |       |
+| iconAppx      | Name of the zipped file within the package that contains icons |
+| languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
+
+- ##### from Manifest:
+
+| Property        | Description           |
+| ------------- |:--------------|
+| deviceFamily      |windows  |
+| uniqueIdentifier      |Bundle.Identity.Name       |
+| buildVersion      |Bundle.Identity.Version  |
+| minimumOsVersion      | Bundle.Prerequisites.OSMinVersion or Bundle.Dependencies.TargetDeviceFamily      |
 
 The assumption for zip and appxUpload is that the unziped folders will have the appx or appxbundle which we will then process as we do normally
 
 ## Prerequisites ##
 
-- Install [node](https://nodejs.org/) version [5.11.0](https://nodejs.org/dist/v0.12.7/x64/)
+- Install [node](https://nodejs.org/) version [7.6.0](https://nodejs.org/dist/v0.12.7/x64/)
 
 - Install project dependencies (based on `<REPO ROOT>/package.json`)
 	```
@@ -106,7 +138,7 @@ The assumption for zip and appxUpload is that the unziped folders will have the 
 	```
 - Upgrade [npm](https://www.npmjs.com/package/npm) to version `3.3.x`
 	```
-	npm install -g npm@3.3
+	npm install -g npm@5
 	```
 - Install the IDE
 	- [Visual Studio Code](https://code.visualstudio.com/)
