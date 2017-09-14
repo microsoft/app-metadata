@@ -1,6 +1,6 @@
 # Description
 
-This library will help you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
+This library helps you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
 
 ## Usage 
 
