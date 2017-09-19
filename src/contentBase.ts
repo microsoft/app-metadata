@@ -65,7 +65,7 @@ export class ContentBase {
                 zipfile.readEntry();
                 zipfile.on("entry", (entry) => {
                     // fix path direction if there are any issues before validating
-                    const validName = this.validateFilename(fileList, entry);
+                    let validName = this.validateAndDecodeFilename(fileList, entry);
                     var valuable = searchStrings.some(file => validName.toLowerCase().includes(file));
                     if (valuable) {
                         entry.fileName = validName;
@@ -121,8 +121,9 @@ export class ContentBase {
     // The zip extractor tool (yauzl) throws if the file path includes \, 
     // however in windows this is a common scenario, so before validating the file name, 
     // we replace \ with path.sep" to stop fileName validation from failing
-     private validateFilename(fileList: string[], entry: any) : string {
+     private validateAndDecodeFilename(fileList: string[], entry: any) : string {
         let validName = entry.fileName.toString().split('\\').join(path.sep);
+        validName = decodeURI(validName);
         const errorMessage = yauzl.validateFileName(validName);
         if (errorMessage != null) {
             throw new ExtractError("unzip filename validation failed");
