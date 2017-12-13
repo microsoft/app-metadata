@@ -70,8 +70,7 @@ export class AppxBundleContent extends ContentBase {
     // FINDS THE APPX INSIDE THAT HAS *EVERYTHING* IMPORTANT
     private CheckManifestForAppx(manifestData: any, fileList: string[]) {
         if (manifestData.Bundle.Packages[0].Package) {
-            for (var i = 0; i < manifestData.Bundle.Packages[0].Package.length; i++) {
-                let packageItem = manifestData.Bundle.Packages[0].Package[i];
+            for (const packageItem of manifestData.Bundle.Packages[0].Package) {
                 if(packageItem.$.Type === "application") { 
                     this.appxName = packageItem.$.FileName;
                      return;
@@ -117,6 +116,6 @@ export class AppxBundleContent extends ContentBase {
         unzipPath = path.join(tempDir, unzipPath);
         fileList = await subPackage.selectiveUnzip(tempDir, unzipPath, subPackage.supportedFiles);
         await subPackage.read(tempDir, fileList);
-        return Promise.resolve(subPackage);
+        return subPackage;
     }
 }
