@@ -77,10 +77,14 @@ export class ContentBase {
                                 zipfile.readEntry();
                             });
                             const buildPath = path.join(tempDir, entry.fileName);
-                            await fse.ensureFile(buildPath);
-                            await fse.open(buildPath, 'w+');
-                            var wstream = fse.createWriteStream(buildPath);
-                            readStream.pipe(wstream);
+                            try {
+                                await fse.ensureFile(buildPath);
+                                await fse.open(buildPath, 'w+');
+                                var wstream = fse.createWriteStream(buildPath);
+                                readStream.pipe(wstream);
+                            } catch(error) {
+                                zipfile.readEntry();
+                            }                           
                         });
                     } else {
                         zipfile.readEntry();
