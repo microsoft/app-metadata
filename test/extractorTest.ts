@@ -37,20 +37,6 @@ describe("#extractor", () => {
                 should(appContent.deviceFamily).eql("iOS");
             });
         });
-        context('when function is called with IPA package 2', () => {
-            it("should extract filename and fingerprint", async () => {
-                let appContent = await Extract.run("./packages/net.hockeyapp.iostraining.ipa");
-                should(appContent.originalFileName).eql("net.hockeyapp.iostraining.ipa");
-                should(appContent.fingerprint).eql("c7314bbcd60ed4d4af3524c8d28ea56e");
-                should(appContent.displayName).eql("App Insights");
-                should(appContent.uniqueIdentifier).eql("Microsoft.ApplicationInsights");
-                should(appContent.version).eql("1.0");
-                should(appContent.buildVersion).eql("10");
-                should(appContent.executableName).eql("ApplicationInsights");
-                should(appContent.minimumOsVersion).eql("8.0");
-                should(appContent.deviceFamily).eql("iOS");
-            });
-        });
         context('when function is called with IPA package 3', () => {
             it("should extract filename and fingerprint", async () => {
                 let appContent = await Extract.run("./packages/valid_adhoc.ipa");

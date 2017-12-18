@@ -127,7 +127,7 @@ export class IpaContent extends ContentBase {
         this.buildVersion = plistData.CFBundleVersion ? plistData.CFBundleVersion : null; 
         this.executableName =  plistData.CFBundleExecutable;
         this.minimumOsVersion =  plistData.MinimumOSVersion || plistData.LSMinimumSystemVersion;
-        this.deviceFamily = "iOS";
+        this.deviceFamily = plistData.UIdeviceFamily;
     }
     private async parseProvision(provision: ProvisioningProfile, provisionName: string, tempDir: string, fileList: any): Promise<any> {
         // look for the file if called with only filename, 
@@ -175,7 +175,7 @@ export class IpaContent extends ContentBase {
         provision.idName = provisionData.AppIDName ? provisionData.AppIDName : null;
         provision.name = provisionData.Name ? provisionData.Name : null;
         provision.UniqueDeviceIdentifierList = provisionData.ProvisionedDevices ? provisionData.ProvisionedDevices : null;
-        this.deviceFamily = "iOS";
+        this.deviceFamily = provisionData.Platform && provisionData.Platform.length > 0 ? provisionData.Platform[0] : null;
     }
     private async parseAppex(fileList: string[], tempDir: string) {
         let bundleProvision = this.findFile(fileList, Constants.PROVISIONING);
