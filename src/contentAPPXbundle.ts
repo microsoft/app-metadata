@@ -30,7 +30,7 @@ export class AppxBundleContent extends ContentBase {
 
         this.CheckManifestForAppx(manifestData, fileList);
         if(this.appxName) {
-            return await this.readAppx(fileList, tempDir);
+            await this.readAppx(fileList, tempDir);
         }
         this.mapManifest(manifestData, fileList);
         this.parseLanguages(fileList);
@@ -70,7 +70,7 @@ export class AppxBundleContent extends ContentBase {
     // FINDS THE APPX INSIDE THAT HAS *EVERYTHING* IMPORTANT
     private CheckManifestForAppx(manifestData: any, fileList: string[]) {
         if (manifestData.Bundle.Packages[0].Package) {
-            for (const packageItem of manifestData.Bundle.Packages[0].Package) { 
+            for (const packageItem of manifestData.Bundle.Packages[0].Package) {
                 if(packageItem.$.Type === "application") { 
                     this.appxName = packageItem.$.FileName;
                      return;

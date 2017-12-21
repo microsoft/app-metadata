@@ -36,9 +36,10 @@ describe("#AppxBundleContent", () => {
                 const subject = new AppxBundleContent();
                 const unzipPath = "test/assets/calc-payload";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
+                const languageDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const languageDe = "Calculator2.WindowsPhone_2016.1003.2147.0_language-de.appx";
                 const languageZhHans = "Calculator2.WindowsPhone_2016.1003.2147.0_language-zh-hans.appx";
-                await subject.read(unzipPath, [manifestPath, languageDe, languageZhHans]);
+                await subject.read(unzipPath, [manifestPath, languageDefault, languageDe, languageZhHans]);
                 should(subject.buildVersion).eql("2016.1003.2115.0");
                 should(subject.deviceFamily).eql("Windows");
                 should(subject.languages).eql(["de", "zh-hans"]);
@@ -49,16 +50,17 @@ describe("#AppxBundleContent", () => {
             const subject = new AppxBundleContent();
             const unzipPath = "test/assets/calc-payload";
             const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
+            const iconDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
             const iconpath = "Calculator2.WindowsPhone_2016.1003.2147.0_scale-180.appx";
 
             it("should extract icon and icon name", async () => {
-                await subject.read(unzipPath, [manifestPath, iconpath]);
+                await subject.read(unzipPath, [manifestPath, iconDefault, iconpath]);
                 should(subject.iconName).eql("storelogo.scale-180.png");
                 should(subject.iconAppx).eql("Calculator2.WindowsPhone_2016.1003.2147.0_scale-180.appx");
                 should(subject.icon).not.eql(undefined);
             });
             it("should extract icon and not interfere with other data collection", async () => {
-                await subject.read(unzipPath, [manifestPath, iconpath]);
+                await subject.read(unzipPath, [manifestPath, iconDefault, iconpath]);
                 should(subject.buildVersion).eql("2016.1003.2115.0");
                 should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
             });
@@ -67,8 +69,9 @@ describe("#AppxBundleContent", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new AppxBundleContent();
                 const unzipPath = "test/assets/calc-payload";
+                const defaultAppx = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
-                await subject.read(unzipPath, [manifestPath]);
+                await subject.read(unzipPath, [manifestPath, defaultAppx]);
                 should(subject.buildVersion).eql("2016.1003.2115.0");
                 should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
                 should(subject.iconName).eql(undefined);
