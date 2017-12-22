@@ -67,7 +67,7 @@ export class ContentBase {
                     // fix path direction if there are any issues before validating
                     let validName = this.validateAndDecodeFilename(fileList, entry);
                     var valuable = searchStrings.some(file => validName.toLowerCase().includes(file));
-                    if (valuable) {
+                    if (valuable && !validName.endsWith(path.sep)) {
                         entry.fileName = validName;
                         zipfile.openReadStream(entry, async (err, readStream) => {
                             if (err) {
@@ -77,14 +77,11 @@ export class ContentBase {
                                 zipfile.readEntry();
                             });
                             const buildPath = path.join(tempDir, entry.fileName);
-                            try {
-                                await fse.ensureFile(buildPath);
-                                await fse.open(buildPath, 'w+');
-                                var wstream = fse.createWriteStream(buildPath);
-                                readStream.pipe(wstream);
-                            } catch(error) {
-                                zipfile.readEntry();
-                            }                           
+                            await fse.ensureFile(buildPath);
+                            await fse.open(buildPath, 'w+');
+                            var wstream = fse.createWriteStream(buildPath);
+                            readStream.pipe(wstream);
+                            zipfile.readEntry();
                         });
                     } else {
                         zipfile.readEntry();
