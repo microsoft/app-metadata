@@ -81,7 +81,6 @@ export class ContentBase {
                             await fse.open(buildPath, 'w+');
                             var wstream = fse.createWriteStream(buildPath);
                             readStream.pipe(wstream);
-                            zipfile.readEntry();
                         });
                     } else {
                         zipfile.readEntry();
