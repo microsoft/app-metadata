@@ -1,15 +1,10 @@
-/// <reference path="../typings/index.d.ts" />
-import { Extract } from "../src/extract";
+import * as mocha from 'mocha';
+import * as should from 'should';
+var copydir = require('copy-dir');
+var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
 import { AppxBundleContent }  from "../src/contentAppxBundle";
 
-import * as mocha from 'mocha';
-import * as Sinon from 'sinon';
-import * as uuid from 'uuid';
-import * as util from 'util';
-import * as td from 'testdouble';
-import * as should from 'should';
-import * as fs from 'fs';
 
 describe("#AppxBundleContent", () => {
     describe("#read", () => {
@@ -34,7 +29,8 @@ describe("#AppxBundleContent", () => {
         context("manifest collection with included languages", () => {
             it("should extract params", async () => {
                 const subject = new AppxBundleContent();
-                const unzipPath = "test/assets/calc-payload";
+                const unzipPath = `test/temp/${shortid.generate()}/calc-payload`;
+                copydir.sync("test/assets/calc-payload", unzipPath);
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
                 const languageDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const languageDe = "Calculator2.WindowsPhone_2016.1003.2147.0_language-de.appx";
@@ -48,11 +44,13 @@ describe("#AppxBundleContent", () => {
         });
         context("existing icon", () => {
             const subject = new AppxBundleContent();
-            const unzipPath = "test/assets/calc-payload";
             const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
             const iconDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
             const iconpath = "Calculator2.WindowsPhone_2016.1003.2147.0_scale-180.appx";
-
+            const unzipPath = `test/temp/${shortid.generate()}/calc-payload`;
+            beforeEach(() => {
+                copydir.sync("test/assets/calc-payload", unzipPath);
+            });
             it("should extract icon and icon name", async () => {
                 await subject.read(unzipPath, [manifestPath, iconDefault, iconpath]);
                 should(subject.iconName).eql("storelogo.scale-180.png");
@@ -66,9 +64,12 @@ describe("#AppxBundleContent", () => {
             });
         });
         context("non-existant icon", () => {
+            const unzipPath = `test/temp/${shortid.generate()}/calc-payload`;
+            beforeEach(() => {
+                copydir.sync("test/assets/calc-payload", unzipPath);
+            });
             it("shouldn't extract icon", async () => {
                 const subject = new AppxBundleContent();
-                const unzipPath = "test/assets/calc-payload";
                 const defaultAppx = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
                 await subject.read(unzipPath, [manifestPath, defaultAppx]);

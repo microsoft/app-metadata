@@ -1,13 +1,10 @@
 var glob = require('glob');
 var path = require('path');
-var through = require('through2')
-var fs = require('fs');
 var chalk = require('chalk');
 var rmdir = require('rmdir');
-var Promise = require('bluebird');
-var merge = require('merge2');
 
 var gulp = require('gulp');
+var del = require('del');
 var ts = require('gulp-typescript');
 var sequence = require('gulp-sequence');
 var typings = require('gulp-typings');
@@ -16,222 +13,108 @@ var mocha = require('gulp-mocha');
 var sourcemaps = require('gulp-sourcemaps');
 
 var tsProjectClient = ts.createProject('tsconfig.json');
-tsProjectClient.config.files = glob.sync('./src/**/*.ts').concat(['./index.ts']);
-
-var tsProjectClientTests = ts.createProject('tsconfig.json');
-tsProjectClientTests.config.files = glob.sync('./test/**/*.ts');
 
 var mochaSettings = {
     clearRequireCache: true,
     ignoreLeaks: true,
-    timeout: 400000000,
+    timeout: 4000,
     slow: 200
 };
 
-var errorReporter = {
-  error: function (error) {
-    gutil.log(error.message);
-    terminate(error);
-  },
-  finish: ts.reporter.defaultReporter().finish
-};
-
-var terminate = function (err) {
-    setTimeout(function () {
-        var exitCode = 0;
-        if (err) {
-            exitCode = -1;
-        }
-        process.exit(exitCode);
-    }, 50);
-};
-
-var patchFiles = function () {
-    var patch = function (file, encoding, callback) {
-        // we'll change our file paths in such a way that the base folder
-        // is always the folder in which our file resides
-        var full = file.history[0].replace(/\\/g, '/');
-        var base = path.dirname(full);
-        var basename = path.basename(full);
-        // trim the end
-        while (base[base.length - 1] == '/') {
-            base = base.substring(0, base.length - 1);
-        }
-
-        // mess with our file. the result will be the same file just
-        // with different file paths
-        file.cwd = base;
-        file.base = base + '/';
-        file.stem = path.basename(full, file.extname);
-        file.history = [full];
-
-        // if we have a sourcemap patch that as well
-        if (file.sourceMap && file.sourceMap.sources) {
-            file.sourceMap.file = basename;
-            const source = getRelativePathToTsFile(file);
-            file.sourceMap.sources = [source];
-        }
-
-        // finally push the file
-        this.push(file);
-        callback();
-    };
-
-    return through.obj(patch);
-};
-
-/**
- * Given a vinyl file return a relative path from this file to its source (the equivelent typescipt file).  
- * @param {*} A vinyl file (https://github.com/gulpjs/vinyl). this is the file that is passes in gulp pipes. 
- */
-var getRelativePathToTsFile = function (file) {
-    const ourDirRelativeToTsConfigFile = "./out"
-    const fullPathToOutFolder = path.join(process.cwd(), ourDirRelativeToTsConfigFile);
-    let relativePathFromJSFileToProjectFolder = path.relative(file.dirname, process.cwd());
-    const pathFromProjectRootToSourceDirName = file.dirname.replace(fullPathToOutFolder, "");
-    const relativePathFromJsFileToTsDirName = path.join(relativePathFromJSFileToProjectFolder, pathFromProjectRootToSourceDirName);
-    const relativePathFromJsFileToTsFile = path.join(relativePathFromJsFileToTsDirName, file.stem) + ".ts";
-
-    return relativePathFromJsFileToTsFile;
-}
-
-var cleanReferencesFromFiles = function () {
-    return through.obj(function (file, enc, cb) {
-        if (file.isNull()) {
-            this.push(file);
-            return cb();
-        }
-
-        if (file.isStream()) {
-            this.emit('error', new gutil.PluginError('gulp-files-clean', 'Streaming not supported'));
-            return cb();
-        }
-
-        var data = fs.readFileSync(file.path).toString();
-        var lines = data.split('\n');
-        for (var i = 0; i < lines.length; i++) {
-            if (lines[i].match(/^\/\/\/.*$/)) {
-                lines.splice(i, 1);
-                i--;
-            }            
-        }
-        fs.writeFileSync(file.path, lines.join('\n'));
-        cb();
-    });
-};
-
-gulp.task('core:build:typings', function (cb) {
-//    cb();
+gulp.task('build:typings', function (cb) {
     return gulp.src("./typings.json")
         .pipe(typings());
 });
 
-gulp.task('core:build:clean', function(cb) {
-    rmdir(tsProjectClient.config.compilerOptions.outDir, function(error, dirs, files) {
-		cb();
-	});
+gulp.task('build:clean', function(cb) {
+    return del(
+            [
+                'src/**/*.js',
+                'src/**/*.d.ts',
+                'test/**/*.d.ts',
+                'test/**/*.js',
+                'test/**/index.js',
+                'test/temp/**/*'
+            ]);
 });
 
-gulp.task('core:build:copy:client', function() {
-    return gulp.src([
-                        '**/.npmrc',
-                        '**/LICENSE',
-                        '**/package.json',
-                        '**/README.md',
+gulp.task('publish:clean', (cb) => {
+    return rmdir('./out', () => cb());
+});
+
+gulp.task('publish:copy', function() {
+    return gulp.src(
+                    [
+                        '.npmrc',
+                        'LICENSE',
+                        'package.json',
+                        'README.md',
+                        'index.d.ts',
+                        'index.js',
+                        'src/**/*.js',
 						'!out/**/*',
                         '!node_modules/**/*'
-                    ])
-                .pipe(patchFiles())
-                .pipe(gulp.dest(function(file) {
-                    return tsProjectClient.config.compilerOptions.outDir;
+                    ]
+                )
+                .pipe(gulp.dest((file) => {
+                    const dest = path.dirname(file.path.replace(file.cwd, file.cwd + '/out'));
+                    return dest;
                 }));
 });
 
-gulp.task('core:build:typescript:client', function () {
-    var tsResult = tsProjectClient.src()
-        .pipe(sourcemaps.init())
-        .pipe(tsProjectClient())
+gulp.task('publish:build', sequence('publish:clean', 'build:clean', 'build:typings', 'publish:build:typescript'));
 
-    return merge([
-        tsResult.js
-            .pipe(patchFiles())
-            .pipe(sourcemaps.write({includeContent: false}))
-            .pipe(gulp.dest(function (file) {
-                return file.cwd;
-            })),
-        tsResult.dts
-            .pipe(patchFiles())
-            .pipe(gulp.dest(function (file) {
-                return file.cwd;
-            }))
-    ]);
-});
-
-gulp.task('core:build:typescript:client-test', function () {
-
-    var tsResult = tsProjectClientTests.src()
-        .pipe(sourcemaps.init())
-        .pipe(tsProjectClientTests());
-
+gulp.task('publish:build:typescript', () => {
+    // building without source maps
+    tsProjectClient.config.sourcemaps = false;
+    const tsResult = tsProjectClient.src()
+        .pipe(tsProjectClient());
+    
     return tsResult.js
-        .pipe(patchFiles())
-        .pipe(sourcemaps.write({includeContent: false}))
-        .pipe(gulp.dest(function (file) {
-            return file.cwd;
-        }));
+        .pipe(gulp.dest((file) => file.cwd));
 });
 
-gulp.task('core:test:mocha:client-test', function (cb) {
+gulp.task('build:typescript', () => {
+    const tsResult = tsProjectClient.src()
+        .pipe(sourcemaps.init())
+        .pipe(tsProjectClient());
+    
+    return tsResult.js
+        .pipe(sourcemaps.mapSources((sourcePath, file) => path.basename(sourcePath)))
+        .pipe(sourcemaps.write({ includeContent: false }))
+        .pipe(gulp.dest('.'));
+});
+
+gulp.task('test:cleanup', (cb) => {
+    return rmdir('./test/temp', () => cb());
+})
+
+gulp.task('test:mocha:run', (cb) => {
     mochaSettings.reporter = 'spec';
 
-    var clientTestFiles = tsProjectClientTests.config.files.slice();
-    for (var i = 0; i < clientTestFiles.length; i++) {
-        clientTestFiles[i] = clientTestFiles[i].replace(/.ts$/i, '.js').replace(/^\./i, './out');
-    }
-
-    gulp.src(clientTestFiles)
-        .pipe(mocha(mochaSettings))
-        .once('error', function (err) {
-            if (cb) {
-                cb(err);
-                cb = null;
-            }
-        })
-        .once('end', function () {
-            if (cb) {
-                cb();
-                cb = null;
-            }
-        });
+    return gulp.src('./test/**/*.js')
+        .pipe(mocha(mochaSettings));
 });
 
-gulp.task('core:build:typescript', sequence('core:build:typescript:client', 'core:build:typescript:client-test', 'core:clean:dts:client' ));
-
-gulp.task('core:test:mocha', sequence('core:test:mocha:client-test'));
-
-gulp.task('core:clean:dts:client', function () {
-    var metadata = fs.readFileSync(path.join('.', 'package.json'));
-    metadata = JSON.parse(metadata);
-
-    gulp.src([path.join(tsProjectClient.config.compilerOptions.outDir, '**/*.d.ts'), path.join(tsProjectClient.config.compilerOptions.outDir, '**/*.js')])
-        .pipe(cleanReferencesFromFiles());
+gulp.task('publish:instructions', (cb) => {
+    gutil.log('======================================');
+    gutil.log('To finish publishing do the following:');
+    gutil.log('1. In package.json, increase the version.');
+    gutil.log('2. go to <root>/out');
+    gutil.log("3. run 'npm publish'");
+    gutil.log('======================================');
+    cb();
 });
 
-gulp.task('build', sequence('core:build:clean', 'core:build:typings', [ 'core:build:copy:client', 'core:build:typescript' ]));
+gulp.task('build', sequence('build:clean', 'build:typings', 'build:typescript'));
+gulp.task('test', sequence('build', 'test:mocha:run', 'test:cleanup'));
+gulp.task('publish', sequence('publish:build', 'publish:copy', 'publish:instructions'));
 
-gulp.task('test', function (cb) {
-    sequence('core:build:typings', 'core:build:typescript', 'core:test:mocha', function (err) {
-        cb(err);
-        terminate(err);
-    });
-});
-
-gulp.task('publish', sequence('build', 'core:publish:azure'));
-
-gulp.task('default', function (cb) {
+gulp.task('default', (cb) => {
     gutil.log('');
     gutil.log('  ' + chalk.cyan('gulp build') + '             - builds the tree');
     gutil.log('  ' + chalk.cyan('gulp test') + '              - runs mocha tests and outputs the result in spec form');
+    gutil.log('  ' + chalk.cyan('gulp publish') + "           - This operation does not perform a publish. It just moves all the files that needs to published to the folder 'out' after that 'npm publish' need to be called from that folder.");
     gutil.log('');
     gutil.log('');
     cb();

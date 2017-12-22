@@ -6,6 +6,7 @@ import * as fse from 'fs-extra';
 import * as path from 'path';
 import * as plist from 'simple-plist';
 import * as bluebird from 'bluebird';
+import { IIpaContent } from './types';
 
 export type ProfileType = "adhoc" | "enterprise" | "other";
 
@@ -20,7 +21,7 @@ export class ProvisioningProfile {
     pathName: string;
 }
 
-export class IpaContent extends ContentBase {
+export class IpaContent extends ContentBase implements IIpaContent {
     provision: ProvisioningProfile;
     appexProvisioningProfiles: ProvisioningProfile[];
 
@@ -36,7 +37,7 @@ export class IpaContent extends ContentBase {
         const provisionData = await this.parseProvision(this.provision, Constants.PROVISIONING, tempDir, fileList);
         this.mapProvision(this. provision, provisionData);
         await this.parseAppex(fileList, tempDir);
-        return this;
+        return this;    
     }
     private iconSearch(fileList: string[]): string {
         let chosenIcon = null;

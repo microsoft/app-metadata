@@ -5,10 +5,12 @@
         "noImplicitAny": false,
         "noEmitOnError": true,
         "preserveConstEnums": true,
-        "moduleResolution": "node", 
+        "moduleResolution": "node",
         "rootDir": "./",
-        "sourceMap": true,
-        "outDir": "./out",
-        "declaration": true
-  }
+        "sourceMap": true
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ]
 }

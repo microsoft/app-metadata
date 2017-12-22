@@ -15,21 +15,23 @@ import * as path from 'path';
 import * as rimraf from 'rimraf';
 import * as md5 from 'md5-file';
 import * as tmp from 'tmp';
+import { ContentBase } from "./contentBase";
+import { IContent } from './types';
 
 export class Extract {
-    public static async run(filePath: string): Promise<any> {
+    public static async run(filePath: string): Promise<IContent> {
         if (!filePath) {
             throw new ExtractError('no defined filePath');
         }
         const fullPath = path.resolve(filePath);
         const exists = await fse.pathExists(fullPath);
         if (!exists) {
-            throw new ExtractError(`${fullPath}' doesnt exist`);
+            throw new ExtractError(`${fullPath}' doesn't exist`);
         }
         const extension = path.extname(filePath).replace(".", "");
         Logger.silly(`extension type: '${extension}`);
         let fileList;
-        let appPackage;
+        let appPackage: ContentBase;
         try {
             switch (extension.toLowerCase()) {
                 case Constants.IPA: appPackage = new IpaContent(); break;

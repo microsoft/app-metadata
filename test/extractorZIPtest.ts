@@ -1,15 +1,8 @@
-/// <reference path="../typings/index.d.ts" />
-import { Extract } from "../src/extract";
+import * as should from 'should';
+var copydir = require('copy-dir');
+var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
 import { ZipContent }  from "../src/contentZIP";
-
-import * as mocha from 'mocha';
-import * as Sinon from 'sinon';
-import * as uuid from 'uuid';
-import * as util from 'util';
-import * as td from 'testdouble';
-import * as should from 'should';
-import * as fs from 'fs';
 
 describe("#ZipContent", () => {
     describe("#read", () => {
@@ -32,9 +25,13 @@ describe("#ZipContent", () => {
             });
         });
         context('zip contains appx subpackage', () => {
+            const unzipPath = `test/temp/${shortid.generate()}/UwpApp_1`;
+            beforeEach(() => {
+                copydir.sync("test/assets/UwpApp_1", unzipPath);
+            });
             it("should extract", async () => {
                 const subject = new ZipContent();
-                await subject.read("test/assets/UwpApp_1", ["Sunset-Bike.appx", "Dependencies/Microsoft.VCLibs.x64.14.00.appx"]);
+                await subject.read(unzipPath, ["Sunset-Bike.appx", "Dependencies/Microsoft.VCLibs.x64.14.00.appx"]);
                 should(subject.subPackage.displayName).eql("Sunset Bike Racer");
                 should(subject.subPackage.executableName).eql("Sunset Racer.exe");
                 should(subject.subPackage.languages).eql(["en", "de", "fr", "pt", "es"]);
@@ -44,9 +41,12 @@ describe("#ZipContent", () => {
             });
         });
         context('zip contains appxbundle subpackage', () => {
+            const unzipPath = `test/temp/${shortid.generate()}/UwpApp_1`;
+            beforeEach(() => {
+                copydir.sync("test/assets/UwpApp_1", unzipPath);
+            });
             it("should extract", async () => {
                 const subject = new ZipContent();
-                const unzipPath = "test/assets/UwpApp_1";
                 const packagePath = "UwpApp_1.1.2.0_x86_x64_arm.appxbundle";
                 const extraPath = "Dependencies/Microsoft.VCLibs.x64.14.00.appx";
                 await subject.read(unzipPath, [packagePath, extraPath]);
