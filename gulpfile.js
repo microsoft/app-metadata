@@ -2,25 +2,18 @@ var glob = require('glob');
 var path = require('path');
 var through = require('through2')
 var fs = require('fs');
-var fse = require('fs-extra');
 var chalk = require('chalk');
 var rmdir = require('rmdir');
-var npm = require('npm');
 var Promise = require('bluebird');
-var https = require('https');
 var merge = require('merge2');
-var dtsBundle = require('dts-bundle');
 
 var gulp = require('gulp');
 var ts = require('gulp-typescript');
 var sequence = require('gulp-sequence');
 var typings = require('gulp-typings');
-var tslint = require('gulp-tslint');
-var istanbul = require('gulp-istanbul');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var sourcemaps = require('gulp-sourcemaps');
-var removeFiles = require('gulp-remove-files');
 
 var tsProjectClient = ts.createProject('tsconfig.json');
 tsProjectClient.config.files = glob.sync('./src/**/*.ts').concat(['./index.ts']);
@@ -33,16 +26,6 @@ var mochaSettings = {
     ignoreLeaks: true,
     timeout: 400000000,
     slow: 200
-};
-
-var istanbulSettings = {
-    dir: 'coverage',
-    reporters: ['html'],
-    reportOpts: {
-        html: {
-            dir: 'coverage/html'
-        }
-    }
 };
 
 var errorReporter = {
@@ -222,45 +205,6 @@ gulp.task('core:test:mocha:client-test', function (cb) {
         });
 });
 
-gulp.task('core:test:tslint', function () {
-    return tsProjectClient.src()
-        .pipe(tslint())
-        .pipe(tslint.report('verbose'));
-});
-
-gulp.task('core:test:istanbul', function (cb) {
-    var clientFiles = tsProjectClient.config.files.slice();
-    for (var i = 0; i < clientFiles.length; i++) {
-        clientFiles[i] = clientFiles[i].replace(/.ts$/i, '.js');
-    }
-
-    var clientTestFiles = tsProjectClientTests.config.files.slice();
-    for (var i = 0; i < clientTestFiles.length; i++) {
-        clientTestFiles[i] = clientTestFiles[i].replace(/.ts$/i, '.js');
-    }
-
-    gulp.src(clientFiles)
-        .pipe(istanbul()) // Covering files
-        .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-        .on('finish', function () {
-            gulp.src(clientTestFiles)
-                .pipe(mocha(mochaSettings))
-                .pipe(istanbul.writeReports(istanbulSettings))
-                .once('error', function (err) {
-                    if (cb) {
-                        cb(err);
-                        cb = null;
-                    }
-                })
-                .once('end', function () {
-                    if (cb) {
-                        cb();
-                        cb = null;
-                    }
-                });
-        });
-});
-
 gulp.task('core:build:typescript', sequence('core:build:typescript:client', 'core:build:typescript:client-test', 'core:clean:dts:client' ));
 
 gulp.task('core:test:mocha', sequence('core:test:mocha:client-test'));
@@ -282,29 +226,12 @@ gulp.task('test', function (cb) {
     });
 });
 
-gulp.task('coverage', function (cb) {
-    sequence('core:build:typings', 'core:build:typescript', 'core:test:istanbul', function (err) {
-        cb(err);
-        terminate(err);
-    });
-});
-
-gulp.task('tslint', function (cb) {
-    sequence('core:test:tslint', function (err) {
-        cb(err);
-        terminate(err);
-    });
-});
-
 gulp.task('publish', sequence('build', 'core:publish:azure'));
 
 gulp.task('default', function (cb) {
     gutil.log('');
     gutil.log('  ' + chalk.cyan('gulp build') + '             - builds the tree');
     gutil.log('  ' + chalk.cyan('gulp test') + '              - runs mocha tests and outputs the result in spec form');
-    gutil.log('  ' + chalk.cyan('gulp publish') + '           - publishes a package to storage');
-    gutil.log('  ' + chalk.cyan('gulp coverage') + '          - runs mocha tests, outputs the result in spec form and outputs coverage info');
-    gutil.log('  ' + chalk.cyan('gulp tslint') + '            - runs gulp tslint, outputs the tslint check result');
     gutil.log('');
     gutil.log('');
     cb();
