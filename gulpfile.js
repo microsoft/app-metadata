@@ -4,7 +4,7 @@ var chalk = require('chalk');
 var rmdir = require('rmdir');
 
 var gulp = require('gulp');
-var clean = require('gulp-clean');
+var del = require('del');
 var ts = require('gulp-typescript');
 var sequence = require('gulp-sequence');
 var typings = require('gulp-typings');
@@ -27,7 +27,7 @@ gulp.task('build:typings', function (cb) {
 });
 
 gulp.task('build:clean', function(cb) {
-    return gulp.src(
+    return del(
             [
                 'src/**/*.js',
                 'src/**/*.d.ts',
@@ -35,10 +35,7 @@ gulp.task('build:clean', function(cb) {
                 'test/**/*.js',
                 'test/**/index.js',
                 'test/temp/**/*'
-            ], 
-            { read: false }
-        )
-        .pipe(clean());
+            ]);
 });
 
 gulp.task('publish:clean', (cb) => {
@@ -88,6 +85,10 @@ gulp.task('build:typescript', () => {
         .pipe(gulp.dest('.'));
 });
 
+gulp.task('test:cleanup', (cb) => {
+    return rmdir('./test/temp', () => cb());
+})
+
 gulp.task('test:mocha:run', (cb) => {
     mochaSettings.reporter = 'spec';
 
@@ -106,7 +107,7 @@ gulp.task('publish:instructions', (cb) => {
 });
 
 gulp.task('build', sequence('build:clean', 'build:typings', 'build:typescript'));
-gulp.task('test', sequence('build', 'test:mocha:run'));
+gulp.task('test', sequence('build', 'test:mocha:run', 'test:cleanup'));
 gulp.task('publish', sequence('publish:build', 'publish:copy', 'publish:instructions'));
 
 gulp.task('default', (cb) => {

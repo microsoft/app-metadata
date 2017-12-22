@@ -16,7 +16,7 @@ import * as rimraf from 'rimraf';
 import * as md5 from 'md5-file';
 import * as tmp from 'tmp';
 import { ContentBase } from "./contentBase";
-import { IContent } from "./types";
+import { IContent } from './types';
 
 export class Extract {
     public static async run(filePath: string): Promise<IContent> {
