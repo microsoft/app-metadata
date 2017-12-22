@@ -10,6 +10,7 @@ import * as util from 'util';
 import * as td from 'testdouble';
 import * as should from 'should';
 import * as fs from 'fs';
+import * as rimraf from 'rimraf';
 
 describe("#AppxBundleContent", () => {
     describe("#read", () => {
@@ -34,7 +35,7 @@ describe("#AppxBundleContent", () => {
         context("manifest collection with included languages", () => {
             it("should extract params", async () => {
                 const subject = new AppxBundleContent();
-                const unzipPath = "test/assets/calc-payload";
+                const unzipPath = "test/assets/calc-payload/";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
                 const languageDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const languageDe = "Calculator2.WindowsPhone_2016.1003.2147.0_language-de.appx";
@@ -44,11 +45,15 @@ describe("#AppxBundleContent", () => {
                 should(subject.deviceFamily).eql("Windows");
                 should(subject.languages).eql(["de", "zh-hans"]);
                 should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
+                rimraf(unzipPath + 'Assets', () => {});
+                rimraf(unzipPath + 'MainPage', () => {});
+                rimraf(unzipPath + 'Microsoft.HockeyApp.Kit', () => {});
+                rimraf(unzipPath + 'AppxManifest.xml', () => {});
             });
         });
         context("existing icon", () => {
             const subject = new AppxBundleContent();
-            const unzipPath = "test/assets/calc-payload";
+            const unzipPath = "test/assets/calc-payload/";
             const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
             const iconDefault = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
             const iconpath = "Calculator2.WindowsPhone_2016.1003.2147.0_scale-180.appx";
@@ -62,13 +67,20 @@ describe("#AppxBundleContent", () => {
             it("should extract icon and not interfere with other data collection", async () => {
                 await subject.read(unzipPath, [manifestPath, iconDefault, iconpath]);
                 should(subject.buildVersion).eql("2016.1003.2115.0");
-                should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
+                should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");              
+            });
+
+            after(() => {
+                rimraf(unzipPath + 'Assets', () => {});
+                rimraf(unzipPath + 'MainPage', () => {});
+                rimraf(unzipPath + 'Microsoft.HockeyApp.Kit', () => {});
+                rimraf(unzipPath + 'AppxManifest.xml', () => {});
             });
         });
         context("non-existant icon", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new AppxBundleContent();
-                const unzipPath = "test/assets/calc-payload";
+                const unzipPath = "test/assets/calc-payload/";
                 const defaultAppx = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
                 await subject.read(unzipPath, [manifestPath, defaultAppx]);
@@ -77,6 +89,11 @@ describe("#AppxBundleContent", () => {
                 should(subject.iconName).eql(undefined);
                 should(subject.iconFullPath).eql(undefined);
                 should(subject.icon).eql(undefined);
+
+                rimraf(unzipPath + 'Assets', () => {});
+                rimraf(unzipPath + 'MainPage', () => {});
+                rimraf(unzipPath + 'Microsoft.HockeyApp.Kit', () => {});
+                rimraf(unzipPath + 'AppxManifest.xml', () => {});
             });
         });
     });

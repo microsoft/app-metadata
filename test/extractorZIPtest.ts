@@ -10,6 +10,7 @@ import * as util from 'util';
 import * as td from 'testdouble';
 import * as should from 'should';
 import * as fs from 'fs';
+import * as rimraf from 'rimraf';
 
 describe("#ZipContent", () => {
     describe("#read", () => {
@@ -41,15 +42,18 @@ describe("#ZipContent", () => {
                 should(subject.subPackage.minimumOsVersion).eql("6.3.1");
                 should(subject.subPackage.buildVersion).eql("26.1.0.40");
                 should(subject.subPackage.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
+                rimraf("test/assets/UwpApp_1/" + 'AppxManifest.xml', () => {});
+                rimraf("test/assets/UwpApp_1/" + 'Assets', () => {});
             });
         });
         context('zip contains appxbundle subpackage', () => {
             it("should extract", async () => {
                 const subject = new ZipContent();
-                const unzipPath = "test/assets/UwpApp_1";
+                const unzipPath = "test/assets/UwpApp_1/";
                 const packagePath = "UwpApp_1.1.2.0_x86_x64_arm.appxbundle";
                 const extraPath = "Dependencies/Microsoft.VCLibs.x64.14.00.appx";
                 await subject.read(unzipPath, [packagePath, extraPath]);
+                rimraf(unzipPath + 'Assets', () => {});
             });
         });
     });
