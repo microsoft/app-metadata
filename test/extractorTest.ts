@@ -37,18 +37,6 @@ describe("#extractor", () => {
                 should(appContent.deviceFamily).eql("iOS");
             });
         });
-        context('when function is called with IPA package 3', () => {
-            it("should extract filename and fingerprint", async () => {
-                let appContent = await Extract.run("./packages/valid_adhoc.ipa");
-                should(appContent.originalFileName).eql("valid_adhoc.ipa");
-                should(appContent.fingerprint).eql("38cb551e3f5af1a8aeca424faf5f4834");
-                should(appContent.displayName).eql("Test");
-                should(appContent.uniqueIdentifier).eql("de.codenauts.icebird.lite.beta");
-                should(appContent.version).eql("1.0");
-                should(appContent.buildVersion).eql("1");
-                should(appContent.iconName).eql("Default-568h@2x.png");
-            });
-        });
         context('when function is called with zip package', () => {
             it("should extract filename and fingerprint", async () => {
                 let appContent = await Extract.run("./packages/UwpApp_1.zip");

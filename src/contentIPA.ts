@@ -41,7 +41,7 @@ export class IpaContent extends ContentBase {
     private iconSearch(fileList: string[]): string {
         let chosenIcon = null;
         for (const plistIcon of fileList) {
-            if (!chosenIcon && plistIcon.toLowerCase().includes("png")) {
+            if (!chosenIcon && plistIcon.toLowerCase().includes("png") && plistIcon.toLowerCase().includes("default")) {
                 chosenIcon = plistIcon;
             }
             if (plistIcon.includes("3x")) {
