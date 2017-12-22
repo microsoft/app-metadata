@@ -41,7 +41,7 @@ export class IpaContent extends ContentBase {
     private iconSearch(fileList: string[]): string {
         let chosenIcon = null;
         for (const plistIcon of fileList) {
-            if (!chosenIcon && plistIcon.toLowerCase().includes("png") && plistIcon.toLowerCase().includes("default")) {
+            if (!chosenIcon && plistIcon.toLowerCase().includes("png")) {
                 chosenIcon = plistIcon;
             }
             if (plistIcon.includes("3x")) {
@@ -127,7 +127,15 @@ export class IpaContent extends ContentBase {
         this.buildVersion = plistData.CFBundleVersion ? plistData.CFBundleVersion : null; 
         this.executableName =  plistData.CFBundleExecutable;
         this.minimumOsVersion =  plistData.MinimumOSVersion || plistData.LSMinimumSystemVersion;
-        this.deviceFamily = plistData.UIdeviceFamily;
+        if (plistData.UIDeviceFamily) {
+            if (plistData.UIDeviceFamily.length === 1) {
+                this.deviceFamily = "iPhone/iPod";
+            } else if (plistData.UIDeviceFamily.length === 2) {
+                this.deviceFamily = "iPhone/iPod/iPad";                
+            } 
+        } else {
+            this.deviceFamily = "iOS";
+        }
     }
     private async parseProvision(provision: ProvisioningProfile, provisionName: string, tempDir: string, fileList: any): Promise<any> {
         // look for the file if called with only filename, 
