@@ -34,7 +34,7 @@ describe("#extractor", () => {
                 should(appContent.buildVersion).eql("1");
                 should(appContent.executableName).eql("SoEntitled");
                 should(appContent.minimumOsVersion).eql("10.0");
-                should(appContent.deviceFamily).eql("iOS");
+                should(appContent.deviceFamily).eql("iPhone/iPod/iPad");
             });
         });
         context('when function is called with zip package', () => {

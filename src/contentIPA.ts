@@ -184,7 +184,6 @@ export class IpaContent extends ContentBase implements IIpaContent {
         provision.idName = provisionData.AppIDName ? provisionData.AppIDName : null;
         provision.name = provisionData.Name ? provisionData.Name : null;
         provision.UniqueDeviceIdentifierList = provisionData.ProvisionedDevices ? provisionData.ProvisionedDevices : null;
-        this.deviceFamily = provisionData.Platform && provisionData.Platform.length > 0 ? provisionData.Platform[0] : null;
     }
     private async parseAppex(fileList: string[], tempDir: string) {
         let bundleProvision = this.findFile(fileList, Constants.PROVISIONING);

@@ -44,7 +44,7 @@ describe("#IpaContent", () => {
                 should(subject.buildVersion).eql("1");
                 should(subject.executableName).eql("SoEntitled");
                 should(subject.minimumOsVersion).eql("10.0");
-                should(subject.deviceFamily).eql("iOS");
+                should(subject.deviceFamily).eql("iPhone/iPod/iPad");
             });
         });
         context("existing icon", () => {
