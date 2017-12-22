@@ -1,16 +1,14 @@
 import { Constants } from "./constants"; 
 import { ExtractError } from "./extractError";
-
-declare var require: any;
-
 import * as fse from 'fs-extra';
 import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as bluebird from 'bluebird';
 import * as yauzl from 'yauzl';
 import { Logger } from './logger';
+import { IContent } from './types';
 
-export class ContentBase {
+export abstract class ContentBase implements IContent {
     originalFileName: string;
     displayName: string;
     name: string;
@@ -25,8 +23,10 @@ export class ContentBase {
     iconName: string;
     icon: ArrayBuffer;
     fingerprint: string;
-    size: string;
+    size: number;
     hasProvisioning: boolean; 
+
+    public abstract read(tempDir: string, fileList: any): Promise<ContentBase>;
 
     public get supportedFiles(): string[] {
       return Constants.GENERAL_FILES;
