@@ -1,4 +1,4 @@
-import { ContentBase } from "./ContentBase";
+import { ContentBase } from "./contentBase";
 import { Constants } from "./constants"; 
 import { AppxContent } from "./contentAPPX";
 import { ExtractError } from "./extractError"; 

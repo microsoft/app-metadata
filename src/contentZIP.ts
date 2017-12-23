@@ -1,6 +1,6 @@
 import { ContentBase } from "./contentBase";
 import { AppxContent } from "./contentAPPX";
-import { AppxBundleContent } from "./contentAPPXbundle";
+import { AppxBundleContent } from "./contentAPPXBundle";
 import { Constants } from "./constants"; 
 import { ExtractError } from "./extractError"; 
 
