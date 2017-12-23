@@ -4,7 +4,7 @@ import { IpaContent } from "./contentIPA";
 import { ApkContent } from "./contentAPK";
 import { AppxContent } from "./contentAPPX";
 import { ZipContent } from "./contentZIP";
-import { AppxBundleContent } from "./contentAPPXbundle";
+import { AppxBundleContent } from "./contentAPPXBundle";
 
 import { Logger } from './logger';
 
