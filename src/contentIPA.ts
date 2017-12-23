@@ -3,8 +3,8 @@ import * as path from 'path';
 import * as plist from 'simple-plist';
 import * as bluebird from 'bluebird';
 import { ContentBase } from "./contentBase";
-import { Constants } from "./constants"; 
-import { ExtractError } from "./extractError"; 
+import { Constants } from "./constants";
+import { ExtractError } from "./extractError";
 import { IIpaContent, IProvisioningProfile } from './types';
 import { endsWith } from 'lodash';
 import { Utils } from './utils';
@@ -16,7 +16,7 @@ export class ProvisioningProfile implements IProvisioningProfile {
     name: string;
     teamIdentifier: string;
     profileType: ProfileType;
-    expiredAt: string;
+    expiredAt: Date;
     mobileProvisionFileContent: string;
     UniqueDeviceIdentifierList: string;
     pathName: string;
@@ -36,9 +36,9 @@ export class IpaContent extends ContentBase implements IIpaContent {
         this.mapPlist(plistData, this.iconFullPath);
         this.parseLanguages(fileList);
         const provisionData = await this.parseProvision(this.provision, Constants.PROVISIONING, tempDir, fileList);
-        this.mapProvision(this. provision, provisionData);
+        this.mapProvision(this.provision, provisionData);
         await this.parseAppex(fileList, tempDir);
-        return this;    
+        return this;
     }
     private iconSearch(fileList: string[]): string {
         // getting the best resolution image
@@ -46,7 +46,7 @@ export class IpaContent extends ContentBase implements IIpaContent {
         if (pngFiles.length === 0) {
             return null;
         }
-        return Utils.findFileByPrioritizedPatterns(pngFiles, [ 
+        return Utils.findFileByPrioritizedPatterns(pngFiles, [
             ['ipad', '@3x'],
             ['@3x'],
             ['ipad', '@2x'],
@@ -111,18 +111,18 @@ export class IpaContent extends ContentBase implements IIpaContent {
         return null;
     }
     private mapPlist(plistData: any, iconPath: string) {
-        this.displayName =  plistData.CFBundleDisplayName ? plistData.CFBundleDisplayName : plistData.CFBundleName; 
-        this.uniqueIdentifier =  plistData.CFBundleIdentifier ? plistData.CFBundleIdentifier : null; 
-        this.version =  plistData.CFBundleShortVersionString ? plistData.CFBundleShortVersionString : null; 
-        this.buildVersion = plistData.CFBundleVersion ? plistData.CFBundleVersion : null; 
-        this.executableName =  plistData.CFBundleExecutable;
-        this.minimumOsVersion =  plistData.MinimumOSVersion || plistData.LSMinimumSystemVersion;
+        this.displayName = plistData.CFBundleDisplayName ? plistData.CFBundleDisplayName : plistData.CFBundleName;
+        this.uniqueIdentifier = plistData.CFBundleIdentifier ? plistData.CFBundleIdentifier : null;
+        this.version = plistData.CFBundleShortVersionString ? plistData.CFBundleShortVersionString : null;
+        this.buildVersion = plistData.CFBundleVersion ? plistData.CFBundleVersion : null;
+        this.executableName = plistData.CFBundleExecutable;
+        this.minimumOsVersion = plistData.MinimumOSVersion || plistData.LSMinimumSystemVersion;
         if (plistData.UIDeviceFamily) {
             if (plistData.UIDeviceFamily.length === 1) {
                 this.deviceFamily = "iPhone/iPod";
             } else if (plistData.UIDeviceFamily.length === 2) {
-                this.deviceFamily = "iPhone/iPod/iPad";                
-            } 
+                this.deviceFamily = "iPhone/iPod/iPad";
+            }
         } else {
             this.deviceFamily = "iOS";
         }
@@ -131,7 +131,7 @@ export class IpaContent extends ContentBase implements IIpaContent {
         // look for the file if called with only filename, 
         // otherwise assume that you're given the entire path
         let provisionPath = null;
-        if(provisionName.split(path.sep).length <= 1) {
+        if (provisionName.split(path.sep).length <= 1) {
             provisionPath = this.findFile(fileList, provisionName);
             if (!provisionPath) {
                 throw new ExtractError("cannot find the provisioning profile");
@@ -177,9 +177,9 @@ export class IpaContent extends ContentBase implements IIpaContent {
     private async parseAppex(fileList: string[], tempDir: string) {
         let bundleProvision = this.findFile(fileList, Constants.PROVISIONING);
         this.appexProvisioningProfiles = [];
-        for(let file of fileList) {
+        for (let file of fileList) {
             // go through and collect all additional provisioning profiles that aren't the basic one
-            const pathSplit =  file.split(path.sep);
+            const pathSplit = file.split(path.sep);
             if (pathSplit[pathSplit.length - 1] === "embedded.mobileprovision" && file !== bundleProvision) {
                 let appexProvision = new ProvisioningProfile();
                 let appexData = await this.parseProvision(appexProvision, file, tempDir, fileList);

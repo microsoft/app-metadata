@@ -61,7 +61,7 @@ describe("#IpaContent", () => {
                 should(subject.icon).eql(undefined);
             });
         });
-        context("embedded.mobileprovision", () => {
+        context.only("embedded.mobileprovision", () => {
             it("should extract provisioning profile", async () => {
                 const subject = new IpaContent();
                 const provision = "Payload 15/SoEntitled.app/Watch/WatchIt.app/embedded.mobileprovision";
@@ -70,7 +70,7 @@ describe("#IpaContent", () => {
                 await subject.read(unzipPath, [plistPath, provision]);
                 should(subject.provision.teamIdentifier).eql("FYD86LA7RE");
                 should(subject.provision.profileType).eql("adhoc");
-                should(subject.provision.expiredAt.toString()).eql("Tue Jan 23 2018 17:02:18 GMT-0800 (PST)");
+                should(subject.provision.expiredAt).eql(new Date('2018-01-24T01:02:18.000Z'));
                 should(subject.provision.idName).eql("CalabashWildcard");
                 should(subject.provision.UniqueDeviceIdentifierList.length).eql(39);
                 should(subject.provision.mobileProvisionFileContent);

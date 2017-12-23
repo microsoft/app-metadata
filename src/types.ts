@@ -5,7 +5,7 @@ export interface IProvisioningProfile {
     name: string;
     teamIdentifier: string;
     profileType: ProfileType;
-    expiredAt: string;
+    expiredAt: Date;
     mobileProvisionFileContent: string;
     UniqueDeviceIdentifierList: string;
     pathName: string;
