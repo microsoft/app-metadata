@@ -1,24 +1,14 @@
 import { Extract } from "../src/extract";
-import { ExtractError } from "../src/extractError";
-import { IpaContent }  from "../src/contentIPA";
-
-import mocha = require('mocha');
-import Sinon = require('sinon');
-import uuid = require('uuid');
-import util = require('util');
-import td = require('testdouble');
 import should = require('should');
-import fs = require('fs');
-
 
 describe("#extractor", () => {
     describe("#run", () => {
-        context('when function is called without a filepath', () => {
+        context('when function is called without a file path', () => {
             it("should throw error", () => {
                 Extract.run(null).should.be.rejected();
             });
         });
-        context('when function is called with an non-existant filePath', () => {
+        context('when function is called with an non-existent file path', () => {
             it("should throw error", () => {
                 Extract.run("./packages/fake.ipa").should.be.rejected();
             });

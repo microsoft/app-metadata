@@ -1,15 +1,6 @@
-/// <reference path="../typings/index.d.ts" />
-import { Extract } from "../src/extract";
+import * as should from 'should';
 import { ExtractError } from "../src/extractError";
 import { IpaContent }  from "../src/contentIPA";
-
-import * as mocha from 'mocha';
-import * as Sinon from 'sinon';
-import * as uuid from 'uuid';
-import * as util from 'util';
-import * as td from 'testdouble';
-import * as should from 'should';
-import * as fs from 'fs';
 
 describe("#IpaContent", () => {
     describe("#read", () => {
@@ -19,7 +10,7 @@ describe("#IpaContent", () => {
                 return subject.read("test/assets/adhoc-signed-payload", ["Payload 15/Base.Iproj"]).should.be.rejectedWith(ExtractError);
             });
         });
-        context('when path to plist is incorrect or nonexistant', () => {
+        context('when path to plist is incorrect or non-existent', () => {
             it("should throw error", async () => {
                 const subject = new IpaContent();
                 return subject.read("Payload 15/Base.Iproj", ["Payload 15/Info.plist"]).should.be.rejectedWith(ExtractError);
@@ -59,7 +50,7 @@ describe("#IpaContent", () => {
                 should(subject.icon).not.eql(undefined);
             });
         });
-        context("non-existant icon", () => {
+        context("non-existent icon", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";

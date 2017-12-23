@@ -9,10 +9,12 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.91",
     "bluebird": "^3.5.0",
     "decompress-zip": "^0.3.0",
     "extract-zip": "^1.6.5",
     "fs-extra": "^5.0.0",
+    "lodash": "^4.17.4",
     "md5-file": "^3.1.1",
     "node-apk-parser": "^0.2.3",
     "path": "^0.12.7",

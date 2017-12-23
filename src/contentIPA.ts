@@ -1,16 +1,17 @@
-import { ContentBase } from "./contentBase";
-import { Constants } from "./constants"; 
-import { ExtractError } from "./extractError"; 
-
 import * as fse from 'fs-extra';
 import * as path from 'path';
 import * as plist from 'simple-plist';
 import * as bluebird from 'bluebird';
-import { IIpaContent } from './types';
+import { ContentBase } from "./contentBase";
+import { Constants } from "./constants"; 
+import { ExtractError } from "./extractError"; 
+import { IIpaContent, IProvisioningProfile } from './types';
+import { endsWith } from 'lodash';
+import { Utils } from './utils';
 
 export type ProfileType = "adhoc" | "enterprise" | "other";
 
-export class ProvisioningProfile {
+export class ProvisioningProfile implements IProvisioningProfile {
     idName: string;
     name: string;
     teamIdentifier: string;
@@ -40,31 +41,19 @@ export class IpaContent extends ContentBase implements IIpaContent {
         return this;    
     }
     private iconSearch(fileList: string[]): string {
-        let chosenIcon = null;
-        for (const plistIcon of fileList) {
-            if (!chosenIcon && plistIcon.toLowerCase().includes("png")) {
-                chosenIcon = plistIcon;
-            }
-            if (plistIcon.includes("3x")) {
-                if (plistIcon.includes("ipad") && !chosenIcon.includes("ipad")) {
-                    chosenIcon = plistIcon;
-                    return chosenIcon;
-                }
-                if (!chosenIcon.includes("3x")) {
-                    chosenIcon = plistIcon;
-                }
-            }
-            if (plistIcon.includes("2x")) {
-                if (!chosenIcon.includes("3x") && !chosenIcon.includes("2x")) {
-                    chosenIcon = plistIcon;
-                } else if (chosenIcon.includes("2x")) {
-                    if (plistIcon.includes("ipad") && !chosenIcon.includes("ipad")) {
-                        chosenIcon = plistIcon;
-                    }
-                }
-            }
+        // getting the best resolution image
+        const pngFiles = fileList.filter(value => value && endsWith(value.toLowerCase(), '.png'));
+        if (pngFiles.length === 0) {
+            return null;
         }
-        return chosenIcon;
+        return Utils.findFileByPrioritizedPatterns(pngFiles, [ 
+            ['ipad', '@3x'],
+            ['@3x'],
+            ['ipad', '@2x'],
+            ['@2x'],
+            ['icon'],
+            ['default']
+        ]);
     }
     private parseLanguages(fileList: string[]) {
         let languageList: any = [];
@@ -101,7 +90,7 @@ export class IpaContent extends ContentBase implements IIpaContent {
     }
     private async parseIcon(fileList: string[], tempDir: string, plistData: any): Promise<string> {
         if (!plistData) {
-            throw new ExtractError("nonexistant plist data");
+            throw new ExtractError("non-existent plist data");
         }
         let chosenIcon = null;
         if (plistData.CFBundleIconFiles) {
