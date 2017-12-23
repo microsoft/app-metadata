@@ -61,7 +61,7 @@ describe("#IpaContent", () => {
                 should(subject.icon).eql(undefined);
             });
         });
-        context.only("embedded.mobileprovision", () => {
+        context("embedded.mobileprovision", () => {
             it("should extract provisioning profile", async () => {
                 const subject = new IpaContent();
                 const provision = "Payload 15/SoEntitled.app/Watch/WatchIt.app/embedded.mobileprovision";
