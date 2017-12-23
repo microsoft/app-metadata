@@ -38,7 +38,7 @@ describe("#IpaContent", () => {
                 should(subject.deviceFamily).eql("iPhone/iPod/iPad");
             });
         });
-        context.only("existing icon", () => {
+        context("existing icon", () => {
             it("should extract icon and icon name", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";
