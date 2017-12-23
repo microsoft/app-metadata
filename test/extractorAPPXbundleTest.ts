@@ -3,7 +3,7 @@ import * as should from 'should';
 var copydir = require('copy-dir');
 var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
-import { AppxBundleContent }  from "../src/contentAppxBundle";
+import { AppxBundleContent }  from "../src/contentAPPXBundle";
 
 
 describe("#AppxBundleContent", () => {
