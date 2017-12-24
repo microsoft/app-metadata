@@ -1,3 +1,5 @@
+![](https://msmobilecenter.visualstudio.com/_apis/public/build/definitions/454a20a9-dfe6-4c1f-8ae8-417f76adb472/2712/badge)
+
 # Description
 
 This library helps you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
