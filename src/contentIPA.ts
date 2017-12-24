@@ -29,7 +29,7 @@ export class IpaContent extends ContentBase implements IIpaContent {
     public get supportedFiles(): string[] {
         return Constants.IOS_FILES;
     }
-    public async read(tempDir: string, fileList: any): Promise<any> {
+    public async read(tempDir: string, fileList: any): Promise<void> {
         this.provision = new ProvisioningProfile();
         const plistData = await this.parsePlist(fileList, tempDir);
         this.iconFullPath = await this.parseIcon(fileList, tempDir, plistData);
@@ -38,7 +38,6 @@ export class IpaContent extends ContentBase implements IIpaContent {
         const provisionData = await this.parseProvision(this.provision, Constants.PROVISIONING, tempDir, fileList);
         this.mapProvision(this.provision, provisionData);
         await this.parseAppex(fileList, tempDir);
-        return this;
     }
     private iconSearch(fileList: string[]): string {
         // getting the best resolution image

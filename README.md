@@ -108,7 +108,6 @@ Supported extensions: .appxbundle, appxupload or .zip
 | ------------- |:--------------|
 | icon      |  |
 | iconName      |       |
-| iconAppx      | Name of the zipped file within the package that contains icons |
 | languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
 
 ##### from Manifest:

@@ -7,7 +7,7 @@ import * as fse from 'fs-extra';
 import * as path from 'path';
 
 export class ApkContent extends ContentBase {
-    public async read(tempDir: string, fileList: any): Promise<any> {
+    public async read(tempDir: string, fileList: any): Promise<void> {
         const manifestPath = this.findFile(fileList, Constants.ANDROID_MANIFEST);
         if (!manifestPath) {
             throw new ExtractError(`couldn't find apk manifest`);
@@ -23,7 +23,6 @@ export class ApkContent extends ContentBase {
         this.iconFullPath = this.iconSearch(fileList);
         await this.readIcon(tempDir, this.iconFullPath);
         this.mapManifest(manifestData);
-        return this;
     }
     private iconSearch(fileList: string[]) : string {
         let chosenIcon = null;

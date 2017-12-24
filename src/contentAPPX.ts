@@ -9,14 +9,13 @@ export class AppxContent extends ContentBase {
     public get supportedFiles(): string[] {
       return Constants.APPX_FILES;
     }
-    public async read(tempDir: string, fileList: string[]): Promise<any> {
+    public async read(tempDir: string, fileList: string[]): Promise<void> {
         const manifestData = await this.parseManifest(tempDir, fileList); 
         if(!manifestData) {
             throw new ExtractError("manifest XML couldn't be parsed");
         }
         await this.mapManifest(tempDir, manifestData);
         await this.parseIcon(tempDir, fileList);
-        return this;
     }
     private async parseManifest(tempDir: string, fileList: any): Promise<any> {
         let manifestPath = this.findFile(fileList, Constants.APPX_MANIFEST);
