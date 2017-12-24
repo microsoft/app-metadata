@@ -57,7 +57,7 @@ gulp.task('publish:copy', function() {
                     ]
                 )
                 .pipe(gulp.dest((file) => {
-                    const dest = path.dirname(file.path.replace(file.cwd, file.cwd + '/out'));
+                    const dest = file.cwd + '/out' + (file.path.includes('/src') ? '/src' : '');
                     return dest;
                 }));
 });
