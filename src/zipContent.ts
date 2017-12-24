@@ -30,7 +30,7 @@ export class ZipContent extends ContentBase {
     }
 
     /** 
-     * Zip packages are getting this information from the inner appxbundle or appx. 
+     * Zip packages are getting package metadata from the inner appxbundle or appx. 
      * This method will take the output from the inner appxbudle/appx packages and 
      * save it in this class.
      */
