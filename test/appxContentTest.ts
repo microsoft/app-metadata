@@ -1,11 +1,10 @@
-import * as mocha from 'mocha';
 import * as should from 'should';
 var copydir = require('copy-dir');
 var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
-import { AppxContent }  from "../src/contentAPPX";
+import { AppxContent }  from "../src/appxContent";
 
-describe("#AppxContent", () => {
+describe("AppxContent", () => {
     describe("#read", () => {
         context('when unzipped Appx has no manifest', () => {
             it("should throw error", async () => {

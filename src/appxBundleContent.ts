@@ -1,6 +1,6 @@
 import { ContentBase } from "./contentBase";
 import { Constants } from "./constants"; 
-import { AppxContent } from "./contentAPPX";
+import { AppxContent } from "./appxContent";
 import { ExtractError } from "./extractError"; 
 
 declare var require: any;

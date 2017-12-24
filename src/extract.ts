@@ -1,19 +1,19 @@
 import { Constants } from "./constants";
 import { ExtractError } from "./extractError";
-import { IpaContent } from "./contentIPA";
-import { ApkContent } from "./contentAPK";
-import { AppxContent } from "./contentAPPX";
-import { ZipContent } from "./contentZIP";
-import { AppxBundleContent } from "./contentAPPXBundle";
+import { IpaContent } from "./ipaContent";
+import { ApkContent } from "./apkContent";
+import { AppxContent } from "./appxContent";
+import { ZipContent } from "./zipContent";
+import { AppxBundleContent } from "./appxBundleContent";
 
 import * as fse from 'fs-extra';
 import * as path from 'path';
 import { Logger } from './logger';
 import { ContentBase } from "./contentBase";
-import { IContent } from './types';
+import { IPackageMetadata } from './types';
 
 export class Extract {
-    public static async run(filePath: string): Promise<IContent> {
+    public static async run(filePath: string): Promise<IPackageMetadata> {
         const file = await File.create(filePath); 
         
         let appPackage: ContentBase;

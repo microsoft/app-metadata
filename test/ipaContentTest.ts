@@ -1,8 +1,8 @@
 import * as should from 'should';
 import { ExtractError } from "../src/extractError";
-import { IpaContent }  from "../src/contentIPA";
+import { IpaContent }  from "../src/ipaContent";
 
-describe("#IpaContent", () => {
+describe("IpaContent", () => {
     describe("#read", () => {
         context('when unzipped IPA is missing its plist', () => {
             it("should throw error", async () => {

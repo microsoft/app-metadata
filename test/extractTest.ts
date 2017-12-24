@@ -1,7 +1,7 @@
 import { Extract } from "../src/extract";
 import should = require('should');
 
-describe("#extractor", () => {
+describe("Extract", () => {
     describe("#run", () => {
         context('when function is called without a file path', () => {
             it("should throw error", () => {

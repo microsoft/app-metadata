@@ -1,2 +1,2 @@
 export { Extract } from './src/extract';
-export { IContent, IIpaContent, IProvisioningProfile } from './src/types';
+export { IPackageMetadata, IIPAMetadata, IProvisioningProfile } from './src/types';

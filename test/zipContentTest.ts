@@ -2,9 +2,9 @@ import * as should from 'should';
 var copydir = require('copy-dir');
 var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
-import { ZipContent }  from "../src/contentZIP";
+import { ZipContent }  from "../src/zipContent";
 
-describe("#ZipContent", () => {
+describe("ZipContent", () => {
     describe("#read", () => {
         context('when zip missing unzipped subpackage', () => {
             it("should throw error", async () => {

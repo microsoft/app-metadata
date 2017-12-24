@@ -10,9 +10,9 @@ import * as tmp from 'tmp';
 import * as md5 from 'md5-file';
 import * as rimraf from 'rimraf';
 import { Logger } from './logger';
-import { IContent } from './types';
+import { IPackageMetadata } from './types';
 
-export abstract class ContentBase implements IContent {
+export abstract class ContentBase implements IPackageMetadata {
     originalFileName: string;
     displayName: string;
     name: string;

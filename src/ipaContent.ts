@@ -5,7 +5,7 @@ import * as bluebird from 'bluebird';
 import { ContentBase } from "./contentBase";
 import { Constants } from "./constants";
 import { ExtractError } from "./extractError";
-import { IIpaContent, IProvisioningProfile } from './types';
+import { IIPAMetadata, IProvisioningProfile } from './types';
 import { endsWith } from 'lodash';
 import { Utils } from './utils';
 
@@ -22,7 +22,7 @@ export class ProvisioningProfile implements IProvisioningProfile {
     pathName: string;
 }
 
-export class IpaContent extends ContentBase implements IIpaContent {
+export class IpaContent extends ContentBase implements IIPAMetadata {
     provision: ProvisioningProfile;
     appexProvisioningProfiles: ProvisioningProfile[];
 

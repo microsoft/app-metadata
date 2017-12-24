@@ -1,8 +1,8 @@
 import * as should from 'should';
-import { ApkContent }  from "../src/contentAPK";
+import { ApkContent }  from "../src/apkContent";
 import { ExtractError } from "../src/extractError";
 
-describe("#ApkContent", () => {
+describe("ApkContent", () => {
     describe("#read", () => {
         context('when unzipped Apk is missing its manifest', () => {
             it("should throw error", async () => {
