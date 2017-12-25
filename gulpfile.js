@@ -52,6 +52,7 @@ gulp.task('publish:copy', function() {
                         'index.d.ts',
                         'index.js',
                         'src/**/*.js',
+                        '!src/consoleFlow.js',
 						'!out/**/*',
                         '!node_modules/**/*'
                     ]
