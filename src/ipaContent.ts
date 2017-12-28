@@ -39,8 +39,8 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         this.mapProvision(this.provision, provisionData);
         await this.parseAppex(fileList, tempDir);
     }
+    /** A best effort to get the best resolution image. */
     private iconSearch(fileList: string[]): string {
-        // getting the best resolution image
         const pngFiles = fileList.filter(value => value && endsWith(value.toLowerCase(), '.png'));
         if (pngFiles.length === 0) {
             return null;
