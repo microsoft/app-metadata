@@ -1,6 +1,6 @@
 import { ContentBase } from "./contentBase";
 import { Constants } from "./constants"; 
-import { AppxContent } from "./contentAPPX";
+import { AppxContent } from "./appxContent";
 import { ExtractError } from "./extractError"; 
 
 declare var require: any;
@@ -13,7 +13,7 @@ export class AppxBundleContent extends ContentBase {
     public get supportedFiles(): string[] {
       return Constants.APPX_FILES;
     }
-    public async read(tempDir: string, fileList: any): Promise<any> {
+    public async read(tempDir: string, fileList: any): Promise<void> {
         const manifestPath = this.findFile(fileList, Constants.APPX_BUNDLE_MANIFEST);
         if (!manifestPath) {
             throw new ExtractError("no XML manifest found");
@@ -37,7 +37,6 @@ export class AppxBundleContent extends ContentBase {
         if(this.iconAppx) {
             await this.parseIcon(tempDir, fileList);
         }
-        return this;
     }
     private parseLanguages(fileList: string[]) {
         // file examples: 

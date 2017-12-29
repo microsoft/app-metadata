@@ -1,14 +1,18 @@
 import { Constants } from "./constants"; 
 import { ExtractError } from "./extractError";
+import * as fs from 'fs';
 import * as fse from 'fs-extra';
 import * as path from 'path';
 import * as xml2js from 'xml2js';
 import * as bluebird from 'bluebird';
 import * as yauzl from 'yauzl';
+import * as tmp from 'tmp';
+import * as md5 from 'md5-file';
+import * as rimraf from 'rimraf';
 import { Logger } from './logger';
-import { IContent } from './types';
+import { IPackageMetadata } from './types';
 
-export abstract class ContentBase implements IContent {
+export abstract class ContentBase implements IPackageMetadata {
     originalFileName: string;
     displayName: string;
     name: string;
@@ -26,7 +30,20 @@ export abstract class ContentBase implements IContent {
     size: number;
     hasProvisioning: boolean; 
 
-    public abstract read(tempDir: string, fileList: any): Promise<ContentBase>;
+    public async extract(absolutePath) {
+        const tempDir = await bluebird.promisify(tmp.dir)(path);
+        let fileList = await this.selectiveUnzip(tempDir, absolutePath, this.supportedFiles);
+        Logger.silly("tempDir " + tempDir);
+
+        await this.read(tempDir, fileList);
+
+        this.fingerprint = md5.sync(absolutePath);
+        this.originalFileName = path.basename(absolutePath);
+        this.size = fs.statSync(absolutePath).size;
+        rimraf(tempDir, () => { Logger.silly('done'); });
+    } 
+
+    public abstract read(tempDir: string, fileList: any): Promise<void>;
 
     public get supportedFiles(): string[] {
       return Constants.GENERAL_FILES;

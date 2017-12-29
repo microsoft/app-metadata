@@ -1,17 +1,8 @@
-/// <reference path="../typings/index.d.ts" />
-import { Extract } from "../src/extract";
-import { ExtractError } from "../src/extractError";
-import { ApkContent }  from "../src/contentAPK";
-
-import * as mocha from 'mocha';
-import * as Sinon from 'sinon';
-import * as uuid from 'uuid';
-import * as util from 'util';
-import * as td from 'testdouble';
 import * as should from 'should';
-import * as fs from 'fs';
+import { ApkContent }  from "../src/apkContent";
+import { ExtractError } from "../src/extractError";
 
-describe("#ApkContent", () => {
+describe("ApkContent", () => {
     describe("#read", () => {
         context('when unzipped Apk is missing its manifest', () => {
             it("should throw error", async () => {
@@ -19,7 +10,7 @@ describe("#ApkContent", () => {
                 return subject.read("test/assets/package-payload", []).should.be.rejectedWith(ExtractError);
             });
         });
-        context('when path to manifest is incorrect or nonexistant', () => {
+        context('when path to manifest is incorrect or non-existent', () => {
             it("should throw error", async () => {
                 const subject = new ApkContent();
                 return subject.read("test/assets/package-payload", ["META-INF/AndroidManifest.xml"]).should.be.rejectedWith(ExtractError);
@@ -55,7 +46,7 @@ describe("#ApkContent", () => {
                 should(subject.icon).not.eql(undefined);
             });
         });
-        context("non-existant icon", () => {
+        context("non-existent icon", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new ApkContent();
                 const unzipPath = "test/assets/package-payload";

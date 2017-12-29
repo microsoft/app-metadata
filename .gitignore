@@ -2,6 +2,7 @@
 app.js
 src/**/*.js
 test/**/*.js
+index.js
 test/**/*.d.ts
 test/temp/**/*
 src/**/*.d.ts

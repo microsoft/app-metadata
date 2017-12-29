@@ -1,17 +1,8 @@
-/// <reference path="../typings/index.d.ts" />
-import { Extract } from "../src/extract";
-import { ExtractError } from "../src/extractError";
-import { IpaContent }  from "../src/contentIPA";
-
-import * as mocha from 'mocha';
-import * as Sinon from 'sinon';
-import * as uuid from 'uuid';
-import * as util from 'util';
-import * as td from 'testdouble';
 import * as should from 'should';
-import * as fs from 'fs';
+import { ExtractError } from "../src/extractError";
+import { IpaContent }  from "../src/ipaContent";
 
-describe("#IpaContent", () => {
+describe("IpaContent", () => {
     describe("#read", () => {
         context('when unzipped IPA is missing its plist', () => {
             it("should throw error", async () => {
@@ -19,7 +10,7 @@ describe("#IpaContent", () => {
                 return subject.read("test/assets/adhoc-signed-payload", ["Payload 15/Base.Iproj"]).should.be.rejectedWith(ExtractError);
             });
         });
-        context('when path to plist is incorrect or nonexistant', () => {
+        context('when path to plist is incorrect or non-existent', () => {
             it("should throw error", async () => {
                 const subject = new IpaContent();
                 return subject.read("Payload 15/Base.Iproj", ["Payload 15/Info.plist"]).should.be.rejectedWith(ExtractError);
@@ -51,19 +42,19 @@ describe("#IpaContent", () => {
             it("should extract icon and icon name", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";
-                const plistPath = "Payload/Bouncyhoops.app/Info.plist";;
-                const icon = "Payload/Bouncyhoops.app/AppIcon72x72@2x~ipad.png";
+                const plistPath = "Payload/bouncyhoops.app/Info.plist";;
+                const icon = "Payload/bouncyhoops.app/AppIcon72x72@2x~ipad.png";
                 const provision = "embedded.mobileprovision";
                 await subject.read(unzipPath, [plistPath, icon, provision]);
                 should(subject.iconName).eql("AppIcon72x72@2x~ipad.png"); 
                 should(subject.icon).not.eql(undefined);
             });
         });
-        context("non-existant icon", () => {
+        context("non-existent icon", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";
-                const plistPath = "Payload/Bouncyhoops.app/Info.plist";;
+                const plistPath = "Payload/bouncyhoops.app/Info.plist";;
                 const provision = "embedded.mobileprovision";
                 await subject.read(unzipPath, [plistPath, provision]);
                 should(subject.iconName).eql(undefined); 
@@ -79,7 +70,7 @@ describe("#IpaContent", () => {
                 await subject.read(unzipPath, [plistPath, provision]);
                 should(subject.provision.teamIdentifier).eql("FYD86LA7RE");
                 should(subject.provision.profileType).eql("adhoc");
-                should(subject.provision.expiredAt.toString()).eql("Tue Jan 23 2018 17:02:18 GMT-0800 (PST)");
+                should(subject.provision.expiredAt).eql(new Date('2018-01-24T01:02:18.000Z'));
                 should(subject.provision.idName).eql("CalabashWildcard");
                 should(subject.provision.UniqueDeviceIdentifierList.length).eql(39);
                 should(subject.provision.mobileProvisionFileContent);
@@ -89,8 +80,8 @@ describe("#IpaContent", () => {
             it("should throw error", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";
-                const plistPath = "Payload/Bouncyhoops.app/Info.plist";;
-                const icon = "Payload/Bouncyhoops.app/AppIcon72x72@2x~ipad.png";
+                const plistPath = "Payload/bouncyhoops.app/Info.plist";;
+                const icon = "Payload/bouncyhoops.app/AppIcon72x72@2x~ipad.png";
                 return subject.read(unzipPath, [plistPath, icon]).should.be.rejectedWith(ExtractError);
             });
         });
@@ -98,8 +89,8 @@ describe("#IpaContent", () => {
             it("should throw error", async () => {
                 const subject = new IpaContent();
                 const unzipPath = "test/assets/basketball-payload";
-                const plistPath = "Payload/Bouncyhoops.app/Info.plist";;
-                const icon = "Payload/Bouncyhoops.app/AppIcon72x72@2x~ipad.png";
+                const plistPath = "Payload/bouncyhoops.app/Info.plist";;
+                const icon = "Payload/bouncyhoops.app/AppIcon72x72@2x~ipad.png";
                 return subject.read(unzipPath, [plistPath, icon]).should.be.rejectedWith(ExtractError);
             });
         });

@@ -52,12 +52,13 @@ gulp.task('publish:copy', function() {
                         'index.d.ts',
                         'index.js',
                         'src/**/*.js',
+                        '!src/consoleFlow.js',
 						'!out/**/*',
                         '!node_modules/**/*'
                     ]
                 )
                 .pipe(gulp.dest((file) => {
-                    const dest = path.dirname(file.path.replace(file.cwd, file.cwd + '/out'));
+                    const dest = file.cwd + '/out' + (file.path.includes('/src') ? '/src' : '');
                     return dest;
                 }));
 });

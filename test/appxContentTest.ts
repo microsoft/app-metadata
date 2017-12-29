@@ -1,11 +1,10 @@
-import * as mocha from 'mocha';
 import * as should from 'should';
 var copydir = require('copy-dir');
 var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
-import { AppxContent }  from "../src/contentAPPX";
+import { AppxContent }  from "../src/appxContent";
 
-describe("#AppxContent", () => {
+describe("AppxContent", () => {
     describe("#read", () => {
         context('when unzipped Appx has no manifest', () => {
             it("should throw error", async () => {
@@ -13,7 +12,7 @@ describe("#AppxContent", () => {
                 return subject.read("test/assets/bike-payload", []).should.be.rejectedWith(ExtractError);
             });
         });
-        context('when path to manifest is incorrect or nonexistant', () => {
+        context('when path to manifest is incorrect or non-existent', () => {
             it("should throw error", async () => {
                 const subject = new AppxContent();
                 return subject.read("test/assets/bike-payload", ["assets/AppxManifest.xml"]).should.be.rejectedWith(ExtractError);
@@ -45,20 +44,20 @@ describe("#AppxContent", () => {
         context("existing icon", () => {
             const subject = new AppxContent();
             const manifestPath = "AppxManifest.xml";
-            const iconpath = "Assets/StoreLogo.scale-240.png";
+            const iconPath = "Assets/StoreLogo.scale-240.png";
             const unzipPath = `test/temp/${shortid.generate()}/bike-payload`;
             beforeEach(() => {
                 copydir.sync("test/assets/bike-payload", unzipPath);
             });
 
             it("should extract icon and icon name", async () => {
-                await subject.read(unzipPath, [manifestPath, iconpath]);
+                await subject.read(unzipPath, [manifestPath, iconPath]);
                 should(subject.iconName).eql("StoreLogo.scale-240.png");
                 should(subject.iconFullPath).eql("Assets/StoreLogo.scale-240.png");
                 should(subject.icon).not.eql(undefined);
             });
             it("should extract icon and not interfere with other collection", async () => {
-                await subject.read(unzipPath, [manifestPath, iconpath]);
+                await subject.read(unzipPath, [manifestPath, iconPath]);
                 should(subject.displayName).eql("Sunset Bike Racer");
                 should(subject.executableName).eql("Sunset Racer.exe");
                 should(subject.languages).eql(["en", "de", "fr", "pt", "es"]);
@@ -67,7 +66,7 @@ describe("#AppxContent", () => {
                 should(subject.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });
-        context("non-existant icon", () => {
+        context("non-existent icon", () => {
             const unzipPath = `test/temp/${shortid.generate()}/bike-payload`;
             beforeEach(() => {
                 copydir.sync("test/assets/bike-payload", unzipPath);

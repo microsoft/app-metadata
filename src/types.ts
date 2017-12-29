@@ -5,13 +5,13 @@ export interface IProvisioningProfile {
     name: string;
     teamIdentifier: string;
     profileType: ProfileType;
-    expiredAt: string;
+    expiredAt: Date;
     mobileProvisionFileContent: string;
     UniqueDeviceIdentifierList: string;
     pathName: string;
 }
 
-export interface IContent {
+export interface IPackageMetadata {
     originalFileName: string;
     displayName: string;
     name: string;
@@ -30,7 +30,7 @@ export interface IContent {
     hasProvisioning: boolean;
 }
 
-export interface IIpaContent extends IContent {
+export interface IIPAMetadata extends IPackageMetadata {
     provision: IProvisioningProfile;
     appexProvisioningProfiles: IProvisioningProfile[];
 }

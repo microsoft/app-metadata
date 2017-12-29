@@ -1,6 +1,6 @@
 import { ContentBase } from "./contentBase";
-import { AppxContent } from "./contentAPPX";
-import { AppxBundleContent } from "./contentAPPXBundle";
+import { AppxContent } from "./appxContent";
+import { AppxBundleContent } from "./appxBundleContent";
 import { Constants } from "./constants"; 
 import { ExtractError } from "./extractError"; 
 
@@ -10,13 +10,13 @@ import * as path from 'path';
 // this class expects the temp directory to have the contents of a .zip or .appxupload, 
 // which would both contain the app itself (.appx/.appxbundle) and other metadata inside
 export class ZipContent extends ContentBase {
-    subPackage: any; //AppxContent | AppxBundleContent; 
+    subPackage: ContentBase; //AppxContent | AppxBundleContent; 
     packageRelativePath: string;
     packageType: string;
     public get supportedFiles(): string[] {
         return Constants.UWP_EXTENSIONS;
     }
-    public async read(tempDir: string, fileList: any): Promise<any> {
+    public async read(tempDir: string, fileList: any): Promise<void> {
         this.packageRelativePath = this.packageSearch(fileList);
         if (!this.packageRelativePath) {
             throw new ExtractError("couldn't find actual app package");
@@ -26,8 +26,30 @@ export class ZipContent extends ContentBase {
         const unzipPath = path.join(tempDir, this.packageRelativePath);
         fileList = await this.subPackage.selectiveUnzip(tempDir, unzipPath, this.subPackage.supportedFiles);
         await this.subPackage.read(tempDir, fileList);
-        return this.subPackage;
+        this.updateFromSubPackage(this.subPackage);
     }
+
+    /** 
+     * Zip packages are getting package metadata from the inner appxbundle or appx. 
+     * This method will take the output from the inner appxbudle/appx packages and 
+     * save it in this class.
+     */
+    private updateFromSubPackage(subPackage: ContentBase) {
+        this.buildVersion = subPackage.buildVersion;
+        this.deviceFamily = subPackage.deviceFamily;
+        this.uniqueIdentifier = subPackage.uniqueIdentifier;
+        this.minimumOsVersion = subPackage.minimumOsVersion;
+        this.executableName = subPackage.executableName;
+        this.deviceFamily = subPackage.deviceFamily;
+        this.languages = subPackage.languages;
+        this.iconFullPath = subPackage.iconFullPath;
+        this.iconName = subPackage.iconName;
+        this.icon = subPackage.icon;
+        this.fingerprint = subPackage.fingerprint;
+        this.size = subPackage.size;
+        this.hasProvisioning = false;
+    }
+
     private packageSearch(fileList: string[]) : string {
         // the directory depth of the packages changes depending on which type of package was unzipped.
         // since you can't know before going in, searching by level is required since there can be other
