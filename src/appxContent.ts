@@ -7,11 +7,11 @@ import * as path from 'path';
 
 export class AppxContent extends ContentBase {
     public get supportedFiles(): string[] {
-      return Constants.APPX_FILES;
+        return Constants.APPX_FILES;
     }
     public async read(tempDir: string, fileList: string[]): Promise<void> {
-        const manifestData = await this.parseManifest(tempDir, fileList); 
-        if(!manifestData) {
+        const manifestData = await this.parseManifest(tempDir, fileList);
+        if (!manifestData) {
             throw new ExtractError("manifest XML couldn't be parsed");
         }
         await this.mapManifest(tempDir, manifestData);
@@ -30,30 +30,30 @@ export class AppxContent extends ContentBase {
         return manifestData;
     }
     private async mapManifest(tempDir: string, manifestData: any) {
-        if(!manifestData || !manifestData.Package) {
+        if (!manifestData || !manifestData.Package) {
             throw new ExtractError("empty manifest");
         }
         this.deviceFamily = Constants.WINDOWS;
         if (manifestData.Package.Properties && manifestData.Package.Properties[0]) {
             this.displayName = manifestData.Package.Properties[0].DisplayName ? manifestData.Package.Properties[0].DisplayName[0] : null;
-            this.iconFullPath =  manifestData.Package.Properties[0].Logo ? manifestData.Package.Properties[0].Logo[0] : null;
+            this.iconFullPath = manifestData.Package.Properties[0].Logo ? manifestData.Package.Properties[0].Logo[0] : null;
         }
         if (manifestData.Package.Identity && manifestData.Package.Identity[0]) {
-            this.uniqueIdentifier  = (manifestData.Package.Identity[0].$ && manifestData.Package.Identity[0].$.Name) ? manifestData.Package.Identity[0].$.Name : null;
+            this.uniqueIdentifier = (manifestData.Package.Identity[0].$ && manifestData.Package.Identity[0].$.Name) ? manifestData.Package.Identity[0].$.Name : null;
             this.buildVersion = (manifestData.Package.Identity[0].$ && manifestData.Package.Identity[0].$.Version) ? manifestData.Package.Identity[0].$.Version : null;
         }
-        if(manifestData.Package.Prerequisites && manifestData.Package.Prerequisites[0]) {
+        if (manifestData.Package.Prerequisites && manifestData.Package.Prerequisites[0]) {
             this.minimumOsVersion = manifestData.Package.Prerequisites[0].OSMinVersion ? manifestData.Package.Prerequisites[0].OSMinVersion[0] : null;
-        } else if(manifestData.Package.Dependencies && manifestData.Package.Dependencies[0]) {
+        } else if (manifestData.Package.Dependencies && manifestData.Package.Dependencies[0]) {
             this.minimumOsVersion = manifestData.Package.Dependencies[0].TargetDeviceFamily && manifestData.Package.Dependencies[0].TargetDeviceFamily[0].$.MinVersion ? manifestData.Package.Dependencies[0].TargetDeviceFamily[0].$.MinVersion : null;
         }
-        if(manifestData.Package.Applications && manifestData.Package.Applications[0] && manifestData.Package.Applications[0].Application && manifestData.Package.Applications[0].Application[0] && manifestData.Package.Applications[0].Application[0].$) {
-            this.executableName =  manifestData.Package.Applications[0].Application[0].$.Executable ? manifestData.Package.Applications[0].Application[0].$.Executable : null;
+        if (manifestData.Package.Applications && manifestData.Package.Applications[0] && manifestData.Package.Applications[0].Application && manifestData.Package.Applications[0].Application[0] && manifestData.Package.Applications[0].Application[0].$) {
+            this.executableName = manifestData.Package.Applications[0].Application[0].$.Executable ? manifestData.Package.Applications[0].Application[0].$.Executable : null;
         }
         this.languages = [];
         if (manifestData.Package.Resources && manifestData.Package.Resources[0] && manifestData.Package.Resources[0].Resource) {
             for (const resource of manifestData.Package.Resources[0].Resource) {
-                if(resource.$.Language) {
+                if (resource.$.Language) {
                     this.languages.push(resource.$.Language.toLowerCase());
                 }
             }
@@ -64,7 +64,7 @@ export class AppxContent extends ContentBase {
             // normalize wasn't working with icon path for sone reason, had to use replace
             this.iconFullPath = path.normalize(this.iconFullPath.replace("\\", "/"));
             let success = await this.readIcon(tempDir, this.iconFullPath);
-          // return if you find the icon as listed in the manifest. Ex: "StoreLogo.png"
+            // return if you find the icon as listed in the manifest. Ex: "StoreLogo.png"
             if (success) {
                 return;
             }
@@ -74,16 +74,16 @@ export class AppxContent extends ContentBase {
             this.iconFullPath = null;
             let max = 0;
             for (let icon of fileList) {
-              // look through potential manifest icons for the one with the best scale 
+                // look through potential manifest icons for the one with the best scale 
                 if (icon.toLowerCase().includes(basename)) {
                     const curr = icon.match(/[0-9]+/);
-                    if(!curr) {
+                    if (!curr) {
                         break;
                     }
                     const int = parseInt(curr[0], 10);
                     if (int && int >= max) {
-                        max = int; 
-                        this.iconFullPath = icon; 
+                        max = int;
+                        this.iconFullPath = icon;
                     }
                 }
             }
@@ -93,5 +93,5 @@ export class AppxContent extends ContentBase {
             return;
         }
         await this.readIcon(tempDir, this.iconFullPath);
-    } 
+    }
 }

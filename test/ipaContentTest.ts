@@ -1,6 +1,7 @@
 import * as should from 'should';
 import { ExtractError } from "../src/extractError";
 import { IpaContent }  from "../src/ipaContent";
+import { WorkingFolder } from '../src/workingFolder';
 
 describe("IpaContent", () => {
     describe("#read", () => {
@@ -25,6 +26,7 @@ describe("IpaContent", () => {
         context("normal plist collection", () => {
             it("should extract params", async () => {
                 const subject = new IpaContent();
+                subject['workingFolder'] = await WorkingFolder.create();
                 const provision = "Payload 15/SoEntitled.app/Watch/WatchIt.app/embedded.mobileprovision";
                 const unzipPath = "test/assets/adhoc-signed-payload";
                 const plistPath = "Payload 15/Info.plist";
@@ -41,6 +43,7 @@ describe("IpaContent", () => {
         context("existing icon", () => {
             it("should extract icon and icon name", async () => {
                 const subject = new IpaContent();
+                subject['workingFolder'] = await WorkingFolder.create();
                 const unzipPath = "test/assets/basketball-payload";
                 const plistPath = "Payload/bouncyhoops.app/Info.plist";;
                 const icon = "Payload/bouncyhoops.app/AppIcon72x72@2x~ipad.png";
@@ -53,6 +56,7 @@ describe("IpaContent", () => {
         context("non-existent icon", () => {
             it("shouldn't extract icon", async () => {
                 const subject = new IpaContent();
+                subject['workingFolder'] = await WorkingFolder.create();
                 const unzipPath = "test/assets/basketball-payload";
                 const plistPath = "Payload/bouncyhoops.app/Info.plist";;
                 const provision = "embedded.mobileprovision";
@@ -64,6 +68,7 @@ describe("IpaContent", () => {
         context("embedded.mobileprovision", () => {
             it("should extract provisioning profile", async () => {
                 const subject = new IpaContent();
+                subject['workingFolder'] = await WorkingFolder.create();
                 const provision = "Payload 15/SoEntitled.app/Watch/WatchIt.app/embedded.mobileprovision";
                 const unzipPath = "test/assets/adhoc-signed-payload";
                 const plistPath = "Payload 15/Info.plist";

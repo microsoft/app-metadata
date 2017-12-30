@@ -1,8 +1,10 @@
 import * as should from 'should';
+import * as path from 'path';
 var copydir = require('copy-dir');
 var shortid = require('shortid');
 import { ExtractError } from "../src/extractError";
 import { AppxContent }  from "../src/appxContent";
+import { WorkingFolder } from '../src/workingFolder';
 
 describe("AppxContent", () => {
     describe("#read", () => {
@@ -45,8 +47,9 @@ describe("AppxContent", () => {
             const subject = new AppxContent();
             const manifestPath = "AppxManifest.xml";
             const iconPath = "Assets/StoreLogo.scale-240.png";
-            const unzipPath = `test/temp/${shortid.generate()}/bike-payload`;
-            beforeEach(() => {
+            const unzipPath = path.join(__dirname, `temp/${shortid.generate()}/bike-payload`);
+            beforeEach(async () => {
+                subject['workingFolder'] = await WorkingFolder.create();
                 copydir.sync("test/assets/bike-payload", unzipPath);
             });
 

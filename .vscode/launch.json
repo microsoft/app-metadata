@@ -6,8 +6,8 @@
 // ${fileExtname}: the current opened file's extension
 // ${cwd}: the current working directory of the spawned process
 {
-    "version": "0.2.0",
-    "configurations":  [
+	"version": "0.2.0",
+	"configurations": [
 		{
 			"name": "publish",
 			"type": "node",
@@ -17,71 +17,77 @@
 			"stopOnEntry": false,
 			"sourceMaps": true,
 			"args": [
-					"publish"
+				"publish"
 			],
 			"runtimeArgs": [
-					"--nolazy"
-			],            
+				"--nolazy"
+			],
 			"cwd": "${workspaceRoot}"
 		},
 		{
-				"name": "Test",
-				"type": "node",
-				"protocol": "inspector",
-				"request": "launch",
-				"program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
-				"stopOnEntry": false,
-				"sourceMaps": true,
-				"args": [
-						"test"
-				],
-				"runtimeArgs": [
-						"--nolazy"
-				],            
-				"cwd": "${workspaceRoot}"
-
+			"name": "Test",
+			"type": "node",
+			"protocol": "inspector",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"args": [
+				"test"
+			],
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"cwd": "${workspaceRoot}"
 		},
 		{
-				"name": "package.apk",
-				"type": "node",
-				"protocol": "inspector",
-				"request": "launch",
-				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/package.apk"],
-				"stopOnEntry": false,
-				"sourceMaps": true,
-				"runtimeArgs": [
-						"--nolazy"
-				],            
-				"cwd": "${workspaceRoot}"
+			"name": "package.apk",
+			"type": "node",
+			"protocol": "inspector",
+			"request": "launch",
+			"program": "${workspaceRoot}/out/src/consoleFlow.js",
+			"args": [
+				"./packages/package.apk"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"cwd": "${workspaceRoot}"
 		},
 		{
-				"name": "BinaryTest.ipa",
-				"type": "node",
-				"protocol": "inspector",
-				"request": "launch",
-				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/adhoc-signed.ipa"],
-				"stopOnEntry": false,
-				"sourceMaps": true,
-				"runtimeArgs": [
-						"--nolazy"
-				],            
-				"cwd": "${workspaceRoot}"
+			"name": "BinaryTest.ipa",
+			"type": "node",
+			"protocol": "inspector",
+			"request": "launch",
+			"program": "${workspaceRoot}/src/consoleFlow",
+			"args": [
+				"/Users/iziklisbon/Downloads/Slack-2.ipa",
+				"/downloads/disk"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"cwd": "${workspaceRoot}"
 		},
 		{
-				"name": "Meow-INT.ipa",
-				"type": "node",
-				"protocol": "inspector",
-				"request": "launch",
-				"program": "${workspaceRoot}/out/src/consoleFlow.js",
-				"args": ["./packages/Meow-INT-1.0-3.ipa"],
-				"stopOnEntry": false,
-				"sourceMaps": true,
-				"runtimeArgs": [
-						"--nolazy"
-				],            
-				"cwd": "${workspaceRoot}"
+			"name": "Meow-INT.ipa",
+			"type": "node",
+			"protocol": "inspector",
+			"request": "launch",
+			"program": "${workspaceRoot}/out/src/consoleFlow.js",
+			"args": [
+				"./packages/Meow-INT-1.0-3.ipa"
+			],
+			"stopOnEntry": false,
+			"sourceMaps": true,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"cwd": "${workspaceRoot}"
 		}
 	]
 }

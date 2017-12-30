@@ -16,7 +16,7 @@ export interface IProvisioningProfile {
     expiredAt: Date;
     mobileProvisionFileContent: string;
     UniqueDeviceIdentifierList: string;
-    pathName: string;
+    absolutePath: string;
 }
 
 export interface IPackageMetadata {
