@@ -9,7 +9,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@types/lodash": "^4.14.91",
     "bluebird": "^3.5.0",
     "decompress-zip": "^0.3.0",
     "extract-zip": "^1.6.5",
@@ -22,13 +21,17 @@
     "simple-plist": "^0.2.1",
     "tmp": "0.0.31",
     "util": "^0.10.3",
+    "uuid": "^3.1.0",
     "winston": "^2.3.1",
     "xml2js": "^0.4.17",
     "yauzl": "^2.9.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^5.0.0",
+    "@types/lodash": "^4.14.91",
     "@types/should": "^8.3.0",
     "@types/sinon": "^4.1.2",
+    "@types/uuid": "^3.4.3",
     "copy-dir": "^0.3.0",
     "del": "^3.0.0",
     "dts-bundle": "^0.4.3",

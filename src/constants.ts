@@ -16,7 +16,7 @@ export class Constants {
     public static APPX_BUNDLE_MANIFEST ="AppxBundleManifest.xml";
     public static ITUNES_PLIST = "iTunesMetadata.plist";
     public static PROVISIONING = "embedded.mobileprovision";
-    public static IOS_FILES = ["icon", "logo", Constants.INFO_PLIST, "2x", "3x", "provision", "embedded", Constants.ITUNES_PLIST.toLowerCase()];
+    public static IOS_FILES = ["icon", "logo", Constants.INFO_PLIST, "2x", "3x", "provision", "embedded", Constants.ITUNES_PLIST.toLowerCase(), "default"];
     public static GENERAL_FILES = ["icon", "logo", "manifest", ".png"];
     public static APPX_FILES = ["icon", "logo", "manifest", ".appx", ".png"];
     public static UWP_EXTENSIONS = [".zip", ".appx", ".appxbundle", ".appxupload"];

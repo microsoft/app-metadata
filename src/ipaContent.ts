@@ -19,7 +19,7 @@ export class ProvisioningProfile implements IProvisioningProfile {
     expiredAt: Date;
     mobileProvisionFileContent: string;
     UniqueDeviceIdentifierList: string;
-    pathName: string;
+    absolutePath: string;
 }
 
 export class IpaContent extends ContentBase implements IIPAMetadata {
@@ -98,14 +98,11 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         if (!chosenIcon) {
             chosenIcon = this.iconSearch(fileList);
         }
-        if (!chosenIcon) {
-            chosenIcon = this.findFile(fileList, "icon");
-        }
         chosenIcon = this.findFile(fileList, chosenIcon);
         // find the filePath for a good icon listed in the manifest
         const exists = await this.readIcon(tempDir, chosenIcon);
         if (exists) {
-            return chosenIcon;
+            return path.join(tempDir, chosenIcon);
         }
         return null;
     }
@@ -138,13 +135,14 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         } else {
             provisionPath = provisionName;
         }
-        let truePath = path.resolve(path.join(tempDir, provisionPath));
-        const exists = await fse.pathExists(truePath);
+        let absolutePath = path.resolve(path.join(tempDir, provisionPath));
+        const exists = await fse.pathExists(absolutePath);
         if (!exists) {
             throw new ExtractError('provisioning file in filelist, but not on disk');
         }
-        const data = await fse.readFile(truePath, "utf8");
-        provision.pathName = provisionPath;
+        const data = await fse.readFile(absolutePath, "utf8");
+        provision.absolutePath = absolutePath;
+        await this.persistFile(provision, 'absolutePath');
         provision.mobileProvisionFileContent = data;
         const start = data.indexOf(Constants.PROVISION_START);
         const end = data.indexOf(Constants.PROVISION_END) + Constants.PROVISION_END.length;

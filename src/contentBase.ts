@@ -8,9 +8,9 @@ import * as bluebird from 'bluebird';
 import * as yauzl from 'yauzl';
 import * as tmp from 'tmp';
 import * as md5 from 'md5-file';
-import * as rimraf from 'rimraf';
 import { Logger } from './logger';
 import { IPackageMetadata } from './types';
+import { WorkingFolder } from "./workingFolder";
 
 export abstract class ContentBase implements IPackageMetadata {
     originalFileName: string;
@@ -29,19 +29,54 @@ export abstract class ContentBase implements IPackageMetadata {
     fingerprint: string;
     size: number;
     hasProvisioning: boolean; 
+    protected workingFolder: WorkingFolder;
 
-    public async extract(absolutePath) {
-        const tempDir = await bluebird.promisify(tmp.dir)(path);
-        let fileList = await this.selectiveUnzip(tempDir, absolutePath, this.supportedFiles);
-        Logger.silly("tempDir " + tempDir);
+    public async extract(packageAbsolutePath, workingFolder: WorkingFolder) {
+        this.workingFolder = workingFolder;
+        
+        // unzip only files that has valuable data.  
+        let fileList = await this.selectiveUnzip(
+            workingFolder.workingFolderPath, 
+            packageAbsolutePath, 
+            this.supportedFiles);
+        
+        // extract metadata from the unzipped files. 
+        await this.read(workingFolder.workingFolderPath, fileList);
 
-        await this.read(tempDir, fileList);
+        // read common properties 
+        this.fingerprint = md5.sync(packageAbsolutePath);
+        this.originalFileName = path.basename(packageAbsolutePath);
+        this.size = fs.statSync(packageAbsolutePath).size;
 
-        this.fingerprint = md5.sync(absolutePath);
-        this.originalFileName = path.basename(absolutePath);
-        this.size = fs.statSync(absolutePath).size;
-        rimraf(tempDir, () => { Logger.silly('done'); });
+        // persist icon (move from the temp folder)
+        await this.persistFile(this, 'iconFullPath');
+
+        // delete temp folder
+        await workingFolder.deleteWorkingFolder();
     } 
+
+    /**
+     * By default all extracted files are deleted. Files that needs to be returned should be persisted.  
+     * This method will read the file path from obj[propertyName], copy the file to this.workingFolder.outFolderPath
+     * and save the new path in obj[propertyName].
+     */
+    protected async persistFile(obj: Object, propertyName: string) {
+        if (propertyName && obj[propertyName]) {
+            let source = obj[propertyName];
+            let fileExist = await fse.pathExists(source);
+            if (!fileExist) {
+                source = path.join(this.workingFolder.workingFolderPath, source); 
+                fileExist = await fse.pathExists(source);
+            }
+            if (fileExist) {
+                const fileName = path.basename(source);
+                const newFilePath = path.join(this.workingFolder.outFolderPath, fileName); 
+                await fse.copy(source, newFilePath);
+                obj[propertyName] = newFilePath;
+            }
+        }
+       
+    }
 
     public abstract read(tempDir: string, fileList: any): Promise<void>;
 
@@ -128,7 +163,7 @@ export abstract class ContentBase implements IPackageMetadata {
         const fullPath = path.join(tempDir, iconName);
         const exists = await fse.pathExists(fullPath);
         if (exists) {
-            this.icon = await fse.readFile(fullPath);
+            this.icon = await fse.readFile(fullPath) as any;
             this.iconName = path.basename(iconName);
             return true;
         }

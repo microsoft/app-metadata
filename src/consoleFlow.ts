@@ -18,18 +18,20 @@ import { Logger, LoggerBootstrap } from './logger';
 
 class Program {
   packagePath: string;
+  workingDir: string;
 
   constructor() {
     LoggerBootstrap.updateWinstonToUseRealConsoleLog();
   }
 
   public processArgs() {
-    if(process.argv.length !== 3) {
+    if(process.argv.length < 3) {
       Logger.info("Error: missing argument");
-      Logger.info("usage (run from project's root): node ./out/src/consoleFlow.js <package's path>");
+      Logger.info("usage (run from project's root): node ./out/src/consoleFlow.js <package's path> [working directory]");
     } 
 
     this.packagePath = process.argv[2];
+    this.workingDir = process.argv.length === 4 ? process.argv[3] : undefined;
   }
 
   public async run() {
@@ -38,7 +40,7 @@ class Program {
     }
 
     try {
-      const content = await Extract.run(this.packagePath);
+      const content = await Extract.run(this.packagePath, this.workingDir);
       Logger.info('Finished Extraction.');
       Logger.info(`package information: ${util.inspect(content)}`);
 
