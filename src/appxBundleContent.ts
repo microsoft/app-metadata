@@ -58,9 +58,8 @@ export class AppxBundleContent extends ContentBase {
         }
         fileList = await this.selectiveUnzip(tempDir, path.join(tempDir, this.iconAppx), [".png"]);
         for(let fileName of fileList) {
-            fileName = fileName.toLowerCase();
-            if (path.extname(fileName) === ".png" && !fileName.includes("wide")) {
-                if (await this.readIcon(tempDir, fileName)) {
+            if (path.extname(fileName).toLowerCase() === ".png" && !fileName.toLowerCase().includes("wide")) {
+                if (await this.readIcon(tempDir, fileName)) {                    
                     return;
                 }
             }
