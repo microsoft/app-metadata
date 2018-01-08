@@ -36,6 +36,7 @@ export class ZipContent extends ContentBase {
      */
     private updateFromSubPackage(subPackage: ContentBase) {
         this.buildVersion = subPackage.buildVersion;
+        this.version = "";
         this.deviceFamily = subPackage.deviceFamily;
         this.uniqueIdentifier = subPackage.uniqueIdentifier;
         this.minimumOsVersion = subPackage.minimumOsVersion;

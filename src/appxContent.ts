@@ -41,6 +41,7 @@ export class AppxContent extends ContentBase {
         if (manifestData.Package.Identity && manifestData.Package.Identity[0]) {
             this.uniqueIdentifier = (manifestData.Package.Identity[0].$ && manifestData.Package.Identity[0].$.Name) ? manifestData.Package.Identity[0].$.Name : null;
             this.buildVersion = (manifestData.Package.Identity[0].$ && manifestData.Package.Identity[0].$.Version) ? manifestData.Package.Identity[0].$.Version : null;
+            this.version = "";
         }
         if (manifestData.Package.Prerequisites && manifestData.Package.Prerequisites[0]) {
             this.minimumOsVersion = manifestData.Package.Prerequisites[0].OSMinVersion ? manifestData.Package.Prerequisites[0].OSMinVersion[0] : null;

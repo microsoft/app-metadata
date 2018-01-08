@@ -40,6 +40,7 @@ describe("AppxContent", () => {
                 should(subject.languages).eql(["en", "de", "fr", "pt", "es"]);
                 should(subject.minimumOsVersion).eql("6.3.1");
                 should(subject.buildVersion).eql("26.1.0.40");
+                should(subject.version).eql("");
                 should(subject.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });
@@ -66,6 +67,7 @@ describe("AppxContent", () => {
                 should(subject.languages).eql(["en", "de", "fr", "pt", "es"]);
                 should(subject.minimumOsVersion).eql("6.3.1");
                 should(subject.buildVersion).eql("26.1.0.40");
+                should(subject.version).eql("");
                 should(subject.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });
@@ -86,6 +88,7 @@ describe("AppxContent", () => {
                 should(subject.languages).eql(["en", "de", "fr", "pt", "es"]);
                 should(subject.minimumOsVersion).eql("6.3.1");
                 should(subject.buildVersion).eql("26.1.0.40");
+                should(subject.version).eql("");
                 should(subject.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });
@@ -103,6 +106,7 @@ describe("AppxContent", () => {
                 should(subject.languages).eql(["en", "de", "fr", "pt", "es"]);
                 should(subject.minimumOsVersion).eql("6.3.1");
                 should(subject.buildVersion).eql("26.1.0.40");
+                should(subject.version).eql("");
                 should(subject.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });

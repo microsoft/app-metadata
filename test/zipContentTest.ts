@@ -37,6 +37,7 @@ describe("ZipContent", () => {
                 should(subject.subPackage.languages).eql(["en", "de", "fr", "pt", "es"]);
                 should(subject.subPackage.minimumOsVersion).eql("6.3.1");
                 should(subject.subPackage.buildVersion).eql("26.1.0.40");
+                should(subject.subPackage.version).eql("");
                 should(subject.subPackage.uniqueIdentifier).eql("7659327F2E2D.SunsetBikeRacer");
             });
         });
