@@ -33,15 +33,18 @@ export abstract class ContentBase implements IPackageMetadata {
 
     public async extract(packageAbsolutePath, workingFolder: WorkingFolder) {
         this.workingFolder = workingFolder;
-        
-        // unzip only files that has valuable data.  
+
+       // unzip only files that has valuable data.  
         let fileList = await this.selectiveUnzip(
             workingFolder.workingFolderPath, 
             packageAbsolutePath, 
             this.supportedFiles);
-        
-        // extract metadata from the unzipped files. 
-        await this.read(workingFolder.workingFolderPath, fileList);
+        try {
+            // extract metadata from the unzipped files. 
+            await this.read(workingFolder.workingFolderPath, fileList);
+        } catch (error) {
+            throw error;
+        }
 
         // read common properties 
         this.fingerprint = md5.sync(packageAbsolutePath);
