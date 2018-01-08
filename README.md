@@ -38,9 +38,8 @@ Supported extension: .ipa
 | Property        | Description           |
 | ------------- |:--------------|
 | displayName |CFBundleDisplayName (The user-visible name of the bundle) or CFBundleName (short bundle name)  |
-| CFBundleDisplayName      |CFBundleIdentifier (reverse DNS that identifies a project by concatenating the company identifier with the product name)       |
-| uniqueIdentifier | CFBundleShortVersionString (The release-version-number string for the bundle)|
-| version | Should always be true since IPA will contain a provisioning profile      |
+| uniqueIdentifier      |CFBundleIdentifier (reverse DNS that identifies a project by concatenating the company identifier with the product name)       |
+| version | CFBundleShortVersionString (The release-version-number string for the bundle)|
 | buildVersion | CFBundleVersion (The build-version-number string for the bundle) |
 | executableName | CFBundleExecutable (Name of the bundle’s executable file) |
 | minimumOsVersion | MinimumOSVersion or LSMinimumSystemVersion |
