@@ -80,6 +80,7 @@ export class AppxBundleContent extends ContentBase {
         this.deviceFamily = Constants.WINDOWS;
         this.uniqueIdentifier = (manifestData.Bundle.Identity && manifestData.Bundle.Identity[0].$.Name) ? manifestData.Bundle.Identity[0].$.Name : null;
         this.buildVersion = (manifestData.Bundle.Identity && manifestData.Bundle.Identity[0].$.Version) ? manifestData.Bundle.Identity[0].$.Version : null;
+        this.version = "";
         this.minimumOsVersion = (manifestData.Bundle.Prerequisites && manifestData.Bundle.Prerequisites[0].$.OSMinVersion) ? manifestData.Bundle.Prerequisites[0].$.OSMinVersion : null;
         if (!this.minimumOsVersion) {
             this.minimumOsVersion = (manifestData.Bundle.Dependencies && manifestData.Bundle.Dependencies[0].$.TargetDeviceFamily) ? manifestData.Bundle.Dependencies[0].$.TargetDeviceFamily : null;
