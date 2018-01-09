@@ -115,12 +115,15 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         this.minimumOsVersion = plistData.MinimumOSVersion || plistData.LSMinimumSystemVersion;
         if (plistData.UIDeviceFamily) {
             if (plistData.UIDeviceFamily.length === 1) {
-                this.deviceFamily = "iPhone/iPod";
+                let deviceValue = plistData.UIDeviceFamily[0];
+                if (deviceValue === 1) {
+                    this.deviceFamily = "iPhone/iPod";                
+                } else if ( deviceValue === 2) {
+                    this.deviceFamily = "iPad";
+                }
             } else if (plistData.UIDeviceFamily.length === 2) {
-                this.deviceFamily = "iPhone/iPod/iPad";
+                this.deviceFamily = "iPhone/iPod/iPad"; 
             }
-        } else {
-            this.deviceFamily = "iOS";
         }
     }
     private async parseProvision(provision: ProvisioningProfile, provisionName: string, tempDir: string, fileList: any): Promise<any> {
