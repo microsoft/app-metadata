@@ -31,6 +31,12 @@ export interface IPackageMetadata {
 }
 
 export interface IIPAMetadata extends IPackageMetadata {
+    /** The IPA's provisioning profile. */
     provision: IProvisioningProfile;
+    
+    /** Provisioning profiles for application extensions  */
     appexProvisioningProfiles: IProvisioningProfile[];
+    
+    /** Full path to the binary file in the IPA */
+    executableFullPath: string;
 }
