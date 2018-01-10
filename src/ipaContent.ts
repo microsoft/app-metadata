@@ -25,6 +25,7 @@ export class ProvisioningProfile implements IProvisioningProfile {
 export class IpaContent extends ContentBase implements IIPAMetadata {
     provision: ProvisioningProfile;
     appexProvisioningProfiles: ProvisioningProfile[];
+    executableFullPath: string;
 
     public get supportedFiles(): string[] {
         return Constants.IOS_FILES;
@@ -38,7 +39,32 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         const provisionData = await this.parseProvision(this.provision, Constants.PROVISIONING, tempDir, fileList);
         this.mapProvision(this.provision, provisionData);
         await this.parseAppex(fileList, tempDir);
+        await this.extractExecutable();
     }
+
+    /** Extract the executable from the IPA and persist it. */
+    private async extractExecutable(): Promise<void> {
+        if (!this.executableName) {
+            throw new ExtractError(`Couldn't extract executable name from IPA.`);
+        }
+        
+        const shouldExtractFile = (filePathInIPA) => {
+            const isOk = endsWith(filePathInIPA, `app/${this.executableName}`);
+            return isOk;
+        }
+        const extractedFiles = await this.selectiveUnzip(this.workingFolder.workingFolderPath, this.packageAbsolutePath, null, shouldExtractFile);
+        if (!extractedFiles || extractedFiles.length === 0) {
+            throw new ExtractError(`Failed to find executable ${extractedFiles}`);
+        }
+        if (extractedFiles.length > 1) {
+            throw new ExtractError(`Found more then one executable: ${extractedFiles.join(',')}`);
+        }
+        
+        this.executableFullPath = path.join(this.workingFolder.workingFolderPath, extractedFiles[0]);
+
+        this.persistFile(this, 'executableFullPath');
+    }
+
     /** A best effort to get the best resolution image. */
     private iconSearch(fileList: string[]): string {
         const pngFiles = fileList.filter(value => value && endsWith(value.toLowerCase(), '.png'));
@@ -117,12 +143,12 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
             if (plistData.UIDeviceFamily.length === 1) {
                 let deviceValue = plistData.UIDeviceFamily[0];
                 if (deviceValue === 1) {
-                    this.deviceFamily = "iPhone/iPod";                
-                } else if ( deviceValue === 2) {
+                    this.deviceFamily = "iPhone/iPod";
+                } else if (deviceValue === 2) {
                     this.deviceFamily = "iPad";
                 }
             } else if (plistData.UIDeviceFamily.length === 2) {
-                this.deviceFamily = "iPhone/iPod/iPad"; 
+                this.deviceFamily = "iPhone/iPod/iPad";
             }
         }
     }
