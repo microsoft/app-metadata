@@ -88,23 +88,45 @@ export abstract class ContentBase implements IPackageMetadata {
             return null;
         }
         searchFile = searchFile.toLowerCase();
+        let foundPath = null;
         for(const filePath of fileList) {
             if(filePath.toLowerCase() === searchFile) {
                 return filePath;
             }
-            const pathSplit =  filePath.split(path.sep);
+            const pathSplit = filePath.split(path.sep);
             for(const pathSegment of pathSplit) {
                 if(pathSegment.toLowerCase() === searchFile && (searchFile !== Constants.INFO_PLIST || searchFile === Constants.PROVISIONING)) {
-                    return filePath;
+                    foundPath = this.selectShortestPath(foundPath, filePath);
                 }
                 // Info.plist and embedded.mobileprovisions is a special case since there are multiple instances in different files
                 if(pathSegment.toLowerCase() === searchFile && (searchFile === Constants.INFO_PLIST || searchFile === Constants.PROVISIONING) && pathSplit.length <= 3) {
-                    return filePath;
+                    foundPath = this.selectShortestPath(foundPath, filePath);
                 }
             }
         }
-        return null;
+        return foundPath;
     }
+
+    /**
+     * This method determines which path (shortest one) should be selected based on its file path depth length. 
+     * For example:
+     *  pathA: a/b/c.txt
+     *  pathB: a/c.txt
+     *  will return pathB since it has the shortest path to c.txt
+     */
+    private selectShortestPath(pathA: string, pathB: string): string {
+        if(!pathA) {
+            return pathB;
+        }
+        const pathASplit   = pathA.split(path.sep);
+        const pathBSplit = pathB.split(path.sep);
+        if (pathASplit.length > pathBSplit.length) {
+            return pathB;
+        } else {
+            return pathA;
+        }
+    }
+
     public async selectiveUnzip(tempDir: string, filePath: string, searchStrings: Array<string>): Promise<Array<string>> {
         let fileList = [tempDir];
         return new Promise<Array<string>>((resolve, reject) => {
