@@ -35,7 +35,7 @@ describe("AppxBundleContent", () => {
                 const languageDe = "Calculator2.WindowsPhone_2016.1003.2147.0_language-de.appx";
                 const languageZhHans = "Calculator2.WindowsPhone_2016.1003.2147.0_language-zh-hans.appx";
                 await subject.read(unzipPath, [manifestPath, languageDefault, languageDe, languageZhHans]);
-                should(subject.buildVersion).eql("2016.1003.2115.0");
+                should(subject.buildVersion).eql("2016.1003.2147.0");
                 should(subject.version).eql("");
                 should(subject.deviceFamily).eql("Windows");
                 should(subject.languages).eql(["de", "zh-hans"]);
@@ -59,7 +59,7 @@ describe("AppxBundleContent", () => {
             });
             it("should extract icon and not interfere with other data collection", async () => {
                 await subject.read(unzipPath, [manifestPath, iconDefault, iconPath]);
-                should(subject.buildVersion).eql("2016.1003.2115.0");
+                should(subject.buildVersion).eql("2016.1003.2147.0");
                 should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
             });
         });
@@ -73,7 +73,7 @@ describe("AppxBundleContent", () => {
                 const defaultAppx = "Calculator2.WindowsPhone_2016.1003.2147.0_ARM.appx";
                 const manifestPath = "AppxMetadata/AppxBundleManifest.xml";
                 await subject.read(unzipPath, [manifestPath, defaultAppx]);
-                should(subject.buildVersion).eql("2016.1003.2115.0");
+                should(subject.buildVersion).eql("2016.1003.2147.0");
                 should(subject.version).eql("");
                 should(subject.uniqueIdentifier).eql("61908RichardWalters.Calculator");
                 should(subject.iconName).eql(undefined);
