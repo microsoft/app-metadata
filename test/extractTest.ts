@@ -95,7 +95,7 @@ describe("Extract", () => {
                 should(appContent.uniqueIdentifier).eql("61908RichardWalters.Calculator");
                 should(appContent.languages.length).eql(12);
                 should(appContent.languages).eql(["de", "es", "fr", "hu", "it", "nl", "pl", "pt", "ru", "tr", "uk", "zh-hans"]);
-                should(appContent.buildVersion).eql("2016.1003.2115.0");
+                should(appContent.buildVersion).eql("2016.1003.2147.0");
                 should(appContent.deviceFamily).eql("Windows");
             });
         });
