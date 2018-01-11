@@ -30,9 +30,11 @@ export abstract class ContentBase implements IPackageMetadata {
     size: number;
     hasProvisioning: boolean; 
     protected workingFolder: WorkingFolder;
+    protected packageAbsolutePath: string;
 
     public async extract(packageAbsolutePath, workingFolder: WorkingFolder) {
         this.workingFolder = workingFolder;
+        this.packageAbsolutePath = packageAbsolutePath;
         
         // unzip only files that has valuable data.  
         let fileList = await this.selectiveUnzip(
@@ -88,25 +90,56 @@ export abstract class ContentBase implements IPackageMetadata {
             return null;
         }
         searchFile = searchFile.toLowerCase();
+        let foundPath = null;
         for(const filePath of fileList) {
             if(filePath.toLowerCase() === searchFile) {
                 return filePath;
             }
-            const pathSplit =  filePath.split(path.sep);
+            const pathSplit = filePath.split(path.sep);
             for(const pathSegment of pathSplit) {
                 if(pathSegment.toLowerCase() === searchFile && (searchFile !== Constants.INFO_PLIST || searchFile === Constants.PROVISIONING)) {
-                    return filePath;
+                    foundPath = this.selectShortestPath(foundPath, filePath);
                 }
                 // Info.plist and embedded.mobileprovisions is a special case since there are multiple instances in different files
                 if(pathSegment.toLowerCase() === searchFile && (searchFile === Constants.INFO_PLIST || searchFile === Constants.PROVISIONING) && pathSplit.length <= 3) {
-                    return filePath;
+                    foundPath = this.selectShortestPath(foundPath, filePath);
                 }
             }
         }
-        return null;
+        return foundPath;
     }
-    public async selectiveUnzip(tempDir: string, filePath: string, searchStrings: Array<string>): Promise<Array<string>> {
+
+    /**
+     * This method determines which path (shortest one) should be selected based on its file path depth length. 
+     * For example:
+     *  pathA: a/b/c.txt
+     *  pathB: a/c.txt
+     *  will return pathB since it has the shortest path to c.txt
+     */
+    private selectShortestPath(pathA: string, pathB: string): string {
+        if(!pathA) {
+            return pathB;
+        }
+        const pathASplit   = pathA.split(path.sep);
+        const pathBSplit = pathB.split(path.sep);
+        if (pathASplit.length > pathBSplit.length) {
+            return pathB;
+        } else {
+            return pathA;
+        }
+    }
+
+    /** 
+     * Extract, selectively, files from a zip file.
+     * @param tempDir output folder. All extracted files will be saved in this folder.
+     * @param filePath A path to a zip file (extension is ignored, can be IPA,APK,...).
+     * @param searchStrings Only files that contains those strings will be extracted. Ignored if the 'match' parameter is used.
+     * @param match a callback that decides which file to extract. When 'match' is used the 'searchStrings' parameter is ignored.
+     * @returns a list of all the files that were extracted. The paths are relative to the zip file (without <tempDir>). 
+     * */
+    public async selectiveUnzip(tempDir: string, filePath: string, searchStrings: Array<string>, match?: (string)=>boolean): Promise<Array<string>> {
         let fileList = [tempDir];
+        let extractedFiles = [];
         return new Promise<Array<string>>((resolve, reject) => {
             // decode strings is set to false, specifically so that if the path seperators are different,
             // they can be flipped manually here before validating their formatting 
@@ -115,17 +148,30 @@ export abstract class ContentBase implements IPackageMetadata {
                     return reject(err);
                 }
                 zipfile.readEntry();
+
+                // iterate over files in the package.
                 zipfile.on("entry", (entry) => {
+                    
                     // fix path direction if there are any issues before validating
                     let validName = this.validateAndDecodeFilename(fileList, entry);
-                    var valuable = searchStrings.some(file => validName.toLowerCase().includes(file));
-                    if (valuable && !validName.endsWith(path.sep)) {
+
+                    // should extract this file, based on 'searchStrings' or the 'match' function
+                    let shouldExtract: boolean; 
+                    if (match) {
+                        shouldExtract = match(validName);
+                    } else {
+                        shouldExtract = searchStrings.some(file => validName.toLowerCase().includes(file));
+                    }
+                    
+                    // extract file.
+                    if (shouldExtract && !validName.endsWith(path.sep)) {
                         entry.fileName = validName;
                         zipfile.openReadStream(entry, async (err, readStream) => {
                             if (err) {
                                 return reject(err);
                             }
                             readStream.on("end", () => {
+                                extractedFiles.push(entry.fileName);
                                 zipfile.readEntry();
                             });
                             const buildPath = path.join(tempDir, entry.fileName);
@@ -140,7 +186,7 @@ export abstract class ContentBase implements IPackageMetadata {
                 });
                 zipfile.on("end", () => {
                     Logger.silly(`Finished extracting to '${tempDir}'`);
-                    return resolve(fileList);
+                    return resolve(extractedFiles);
                 });
             });
         });

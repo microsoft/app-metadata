@@ -27,12 +27,16 @@ export class AppxBundleContent extends ContentBase {
         if (!manifestData) {
             throw new ExtractError("manifest XML couldn't be parsed");
         }
-
-        this.CheckManifestForAppx(manifestData, fileList);
-        if(this.appxName) {
-            await this.readAppx(fileList, tempDir);
+        
+        this.appxName = this.getAppxNameFromManifest(manifestData, fileList);
+        if (!this.appxName) {
+            throw new ExtractError(`cannot find the appx name in the manifest.`);            
         }
-        this.mapManifest(manifestData, fileList);
+        const appx = await this.readAppx(fileList, tempDir);
+        if (!appx) {
+            throw new ExtractError(`cannot find the appx '${this.appxName}' in the package.`); 
+        }
+        this.mapManifest(manifestData, fileList, appx);
         this.parseLanguages(fileList);
         if(this.iconAppx) {
             await this.parseIcon(tempDir, fileList);
@@ -65,26 +69,23 @@ export class AppxBundleContent extends ContentBase {
             }
         }
     }
-    // FINDS THE APPX INSIDE THAT HAS *EVERYTHING* IMPORTANT
-    private CheckManifestForAppx(manifestData: any, fileList: string[]) {
+
+    private getAppxNameFromManifest(manifestData: any, fileList: string[]): string {
         if (manifestData.Bundle.Packages[0].Package) {
             for (const packageItem of manifestData.Bundle.Packages[0].Package) {
                 if(packageItem.$.Type === "application") { 
-                    this.appxName = packageItem.$.FileName;
-                     return;
+                    return packageItem.$.FileName;
                 }
             }
-        }
+        } 
+        return null;
     }
-    private mapManifest(manifestData: any, fileList: string[]) {
+    private mapManifest(manifestData: any, fileList: string[], appxContent: AppxContent) {
         this.deviceFamily = Constants.WINDOWS;
-        this.uniqueIdentifier = (manifestData.Bundle.Identity && manifestData.Bundle.Identity[0].$.Name) ? manifestData.Bundle.Identity[0].$.Name : null;
-        this.buildVersion = (manifestData.Bundle.Identity && manifestData.Bundle.Identity[0].$.Version) ? manifestData.Bundle.Identity[0].$.Version : null;
+        this.uniqueIdentifier = appxContent.uniqueIdentifier;
+        this.buildVersion = appxContent.buildVersion;
         this.version = "";
-        this.minimumOsVersion = (manifestData.Bundle.Prerequisites && manifestData.Bundle.Prerequisites[0].$.OSMinVersion) ? manifestData.Bundle.Prerequisites[0].$.OSMinVersion : null;
-        if (!this.minimumOsVersion) {
-            this.minimumOsVersion = (manifestData.Bundle.Dependencies && manifestData.Bundle.Dependencies[0].$.TargetDeviceFamily) ? manifestData.Bundle.Dependencies[0].$.TargetDeviceFamily : null;
-        }
+        this.minimumOsVersion = appxContent.minimumOsVersion;
         let iconScale = 0;
         // find possible languages and icon scales
         if (manifestData.Bundle.Packages[0].Package) {
