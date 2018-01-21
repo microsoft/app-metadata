@@ -7,7 +7,7 @@ export interface IProvisioningProfile {
     profileType: ProfileType;
     expiredAt: Date;
     mobileProvisionFileContent: string;
-    UniqueDeviceIdentifierList: string;
+    UniqueDeviceIdentifierList: string[];
     absolutePath: string;
 }
 
