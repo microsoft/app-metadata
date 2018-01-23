@@ -26,6 +26,7 @@ export interface IProvisioningProfile {
 }
 
 export interface IPackageMetadata {
+    operatingSystem: OperatingSystem;
     originalFileName: string;
     displayName: string;
     name: string;
