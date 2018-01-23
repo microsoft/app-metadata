@@ -44,7 +44,7 @@ export class ApkContent extends ContentBase {
     private mapManifest(manifestData: any) {
         this.uniqueIdentifier =  manifestData.package ? manifestData.package : null; 
         this.version =  manifestData.versionName ? manifestData.versionName : null;
-        this.buildVersion =  manifestData.versionCode ? manifestData.versionCode : null;
+        this.buildVersion =  manifestData.versionCode ? `${manifestData.versionCode}` : null;
         this.minimumOsVersion =  manifestData.usesSdk ? manifestData.usesSdk.minSdkVersion : null;
         this.deviceFamily = Constants.ANDROID;
     }

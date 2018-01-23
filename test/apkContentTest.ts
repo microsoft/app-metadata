@@ -30,7 +30,7 @@ describe("ApkContent", () => {
                 await subject.read(unzipPath, [manifestPath]);
                 should(subject.uniqueIdentifier).eql("com.hockeyapp.hockeydevapp");
                 should(subject.version).eql("1.1.0");
-                should(subject.buildVersion).eql(5);
+                should(subject.buildVersion).eql('5');
                 should(subject.minimumOsVersion).eql(15);
                 should(subject.deviceFamily).eql("Android");
             });
@@ -56,7 +56,7 @@ describe("ApkContent", () => {
                 should(subject.icon).eql(undefined);
                 should(subject.uniqueIdentifier).eql("com.hockeyapp.hockeydevapp");
                 should(subject.version).eql("1.1.0");
-                should(subject.buildVersion).eql(5);
+                should(subject.buildVersion).eql('5');
                 should(subject.minimumOsVersion).eql(15);
                 should(subject.deviceFamily).eql("Android");
             });
@@ -72,7 +72,7 @@ describe("ApkContent", () => {
                 should(subject.icon).eql(undefined);
                 should(subject.uniqueIdentifier).eql("com.hockeyapp.hockeydevapp");
                 should(subject.version).eql("1.1.0");
-                should(subject.buildVersion).eql(5);
+                should(subject.buildVersion).eql('5');
                 should(subject.minimumOsVersion).eql(15);
                 should(subject.deviceFamily).eql("Android");
             });
