@@ -8,6 +8,12 @@ export declare class ExtractError extends Error {
 
 export type ProfileType = "adhoc" | "enterprise" | "other";
 
+export enum OperatingSystem {
+    iOS,
+    Android,
+    Windows
+}
+
 export interface IProvisioningProfile {
     idName: string;
     name: string;
@@ -38,7 +44,7 @@ export interface IPackageMetadata {
     hasProvisioning: boolean;
 }
 
-export interface IIPAMetadata extends IPackageMetadata {
+export interface IpaAMetadata extends IPackageMetadata {
     /** The IPA's provisioning profile. */
     provision: IProvisioningProfile;
     

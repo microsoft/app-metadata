@@ -5,9 +5,11 @@ import * as ManifestParser from "node-apk-parser/lib/apkreader/parser/manifest";
 
 import * as fse from 'fs-extra';
 import * as path from 'path';
+import { OperatingSystem } from "./types";
 
 export class ApkContent extends ContentBase {
     public async read(tempDir: string, fileList: any): Promise<void> {
+        this.operatingSystem = OperatingSystem.Android;
         const manifestPath = this.findFile(fileList, Constants.ANDROID_MANIFEST);
         if (!manifestPath) {
             throw new ExtractError(`couldn't find apk manifest`);

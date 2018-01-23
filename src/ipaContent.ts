@@ -5,7 +5,7 @@ import * as bluebird from 'bluebird';
 import { ContentBase } from "./contentBase";
 import { Constants } from "./constants";
 import { ExtractError } from "./extractError";
-import { IIPAMetadata, IProvisioningProfile } from './types';
+import { IIpaMetadata, IProvisioningProfile, OperatingSystem } from './types';
 import { endsWith } from 'lodash';
 import { Utils } from './utils';
 
@@ -22,7 +22,7 @@ export class ProvisioningProfile implements IProvisioningProfile {
     absolutePath: string;
 }
 
-export class IpaContent extends ContentBase implements IIPAMetadata {
+export class IpaContent extends ContentBase implements IIpaMetadata {
     provision: ProvisioningProfile;
     appexProvisioningProfiles: ProvisioningProfile[];
     executableFullPath: string;
@@ -31,6 +31,7 @@ export class IpaContent extends ContentBase implements IIPAMetadata {
         return Constants.IOS_FILES;
     }
     public async read(tempDir: string, fileList: any): Promise<void> {
+        this.operatingSystem = OperatingSystem.iOS;
         this.provision = new ProvisioningProfile();
         const plistData = await this.parsePlist(fileList, tempDir);
         this.iconFullPath = await this.parseIcon(fileList, tempDir, plistData);

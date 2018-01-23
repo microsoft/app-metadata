@@ -1,7 +1,7 @@
 import * as path from 'path';
 import { Extract } from '../src/extract';
 import should = require('should');
-import { IIPAMetadata } from '../src/types';
+import { IIpaMetadata, OperatingSystem } from '../src/types';
 
 describe("Extract", () => {
     describe("#run", () => {
@@ -27,6 +27,7 @@ describe("Extract", () => {
                 should(appContent.executableName).eql("SoEntitled");
                 should(appContent.minimumOsVersion).eql("10.0");
                 should(appContent.deviceFamily).eql("iPhone/iPod/iPad");
+                should(appContent.operatingSystem).eql(OperatingSystem.iOS);
             });
 
             it("should extract icon and provisioning profile", async () => {
@@ -44,7 +45,7 @@ describe("Extract", () => {
                 should(appContent.minimumOsVersion).eql('11.1');
                 should(appContent.deviceFamily).eql('iPhone/iPod/iPad');
                 should(appContent.hasProvisioning).eql(true);
-                const ipa = appContent as IIPAMetadata;
+                const ipa = appContent as IIpaMetadata;
                 should(ipa.provision.absolutePath).startWith(`${workingDir}/`);
                 should(ipa.provision.absolutePath).endWith('out/embedded.mobileprovision');
                 should(ipa.provision.expiredAt.toISOString()).equal('2018-11-28T23:46:08.000Z');
@@ -70,6 +71,7 @@ describe("Extract", () => {
                 should(appContent.buildVersion).eql('5');
                 should(appContent.minimumOsVersion).eql(15);
                 should(appContent.deviceFamily).eql('Android');
+                should(appContent.operatingSystem).eql(OperatingSystem.Android);
             });
         });
         context('when function is called with zip package', () => {
@@ -80,6 +82,7 @@ describe("Extract", () => {
                 should(appContent.uniqueIdentifier).eql("7b8e5825-5039-4f80-b71f-ac8f578f434e");
                 should(appContent.buildVersion).eql("1.1.2.0");
                 should(appContent.deviceFamily).eql("Windows");
+                should(appContent.operatingSystem).eql(OperatingSystem.Windows);
                 // TODO: 
                 // running on ubuntu (our build machines) these validations are failing:
                 // should(appContent.icon).not.eql(undefined);
@@ -97,6 +100,7 @@ describe("Extract", () => {
                 should(appContent.languages).eql(["de", "es", "fr", "hu", "it", "nl", "pl", "pt", "ru", "tr", "uk", "zh-hans"]);
                 should(appContent.buildVersion).eql("2016.1003.2147.0");
                 should(appContent.deviceFamily).eql("Windows");
+                should(appContent.operatingSystem).eql(OperatingSystem.Windows);
             });
         });
         context('when function is called with an unhandled package type', () => {

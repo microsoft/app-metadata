@@ -9,10 +9,11 @@ import * as yauzl from 'yauzl';
 import * as tmp from 'tmp';
 import * as md5 from 'md5-file';
 import { Logger } from './logger';
-import { IPackageMetadata } from './types';
+import { IPackageMetadata, OperatingSystem } from './types';
 import { WorkingFolder } from "./workingFolder";
 
 export abstract class ContentBase implements IPackageMetadata {
+    operatingSystem: OperatingSystem;
     originalFileName: string;
     displayName: string;
     name: string;
