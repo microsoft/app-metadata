@@ -45,7 +45,7 @@ export interface IPackageMetadata {
     hasProvisioning: boolean;
 }
 
-export interface IpaAMetadata extends IPackageMetadata {
+export interface IpaMetadata extends IPackageMetadata {
     /** The IPA's provisioning profile. */
     provision: IProvisioningProfile;
     
