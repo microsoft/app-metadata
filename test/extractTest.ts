@@ -67,7 +67,7 @@ describe("Extract", () => {
                 should(appContent.fingerprint).eql('7ad681230cdb3a6de5edab6f3f4c75d6');
                 should(appContent.uniqueIdentifier).eql('com.hockeyapp.hockeydevapp');
                 should(appContent.version).eql('1.1.0');
-                should(appContent.buildVersion).eql(5);
+                should(appContent.buildVersion).eql('5');
                 should(appContent.minimumOsVersion).eql(15);
                 should(appContent.deviceFamily).eql('Android');
             });
