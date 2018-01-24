@@ -8,7 +8,7 @@ export declare class ExtractError extends Error {
 
 export type ProfileType = "adhoc" | "enterprise" | "other";
 
-export enum OperatingSystem {
+export declare const enum OperatingSystem {
     iOS,
     Android,
     Windows
@@ -45,7 +45,7 @@ export interface IPackageMetadata {
     hasProvisioning: boolean;
 }
 
-export interface IpaMetadata extends IPackageMetadata {
+export interface IIpaMetadata extends IPackageMetadata {
     /** The IPA's provisioning profile. */
     provision: IProvisioningProfile;
     

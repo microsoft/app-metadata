@@ -1,5 +1,5 @@
 export type ProfileType = "adhoc" | "enterprise" | "other";
-export enum OperatingSystem {
+export const enum OperatingSystem {
     iOS,
     Android,
     Windows
