@@ -6,6 +6,7 @@ import { ExtractError } from "./extractError";
 declare var require: any;
 import * as path from 'path';
 import * as fse from 'fs-extra';
+import { OperatingSystem } from "./types";
 
 export class AppxBundleContent extends ContentBase {
     appxName: string; // this holds the name of the subPackage
@@ -14,6 +15,7 @@ export class AppxBundleContent extends ContentBase {
       return Constants.APPX_FILES;
     }
     public async read(tempDir: string, fileList: any): Promise<void> {
+        this.operatingSystem = OperatingSystem.Windows;
         const manifestPath = this.findFile(fileList, Constants.APPX_BUNDLE_MANIFEST);
         if (!manifestPath) {
             throw new ExtractError("no XML manifest found");

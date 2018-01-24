@@ -6,6 +6,7 @@ import { ExtractError } from "./extractError";
 
 declare var require: any;
 import * as path from 'path';
+import { OperatingSystem } from "./types";
 
 // this class expects the temp directory to have the contents of a .zip or .appxupload, 
 // which would both contain the app itself (.appx/.appxbundle) and other metadata inside
@@ -17,6 +18,7 @@ export class ZipContent extends ContentBase {
         return Constants.UWP_EXTENSIONS;
     }
     public async read(tempDir: string, fileList: any): Promise<void> {
+        this.operatingSystem = OperatingSystem.Windows;
         this.packageRelativePath = this.packageSearch(fileList);
         if (!this.packageRelativePath) {
             throw new ExtractError("couldn't find actual app package");

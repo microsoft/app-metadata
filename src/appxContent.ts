@@ -4,12 +4,14 @@ import { ExtractError } from "./extractError";
 
 import * as fse from 'fs-extra';
 import * as path from 'path';
+import { OperatingSystem } from "./types";
 
 export class AppxContent extends ContentBase {
     public get supportedFiles(): string[] {
         return Constants.APPX_FILES;
     }
     public async read(tempDir: string, fileList: string[]): Promise<void> {
+        this.operatingSystem = OperatingSystem.Windows;
         const manifestData = await this.parseManifest(tempDir, fileList);
         if (!manifestData) {
             throw new ExtractError("manifest XML couldn't be parsed");
