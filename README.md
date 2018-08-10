@@ -101,7 +101,7 @@ Supported extensions: .appx, .appxupload, .msix, .msixupload or .zip
 Supported extensions: .appxbundle, .appxupload, .msixbundle, .msixupload or .zip
 ```
 
-> For .appxbundle or .msixbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle/msixbundle manifest and metadata
+> For .appxbundle or .msixbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle/msixbundle manifest and metadata. We will only be supporting UWP apps with .msix extensions, despite them being universal
 
 | Property        | Description           |
 | ------------- |:--------------|
