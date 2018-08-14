@@ -79,7 +79,7 @@ Supported extension: .apk
 
 ### UWP 
 ```
-Supported extensions: .appx, appxupload or .zip
+Supported extensions: .appx, .appxupload, .msix, .msixupload or .zip
 ```
 
 ##### from Manifest:
@@ -98,16 +98,16 @@ Supported extensions: .appx, appxupload or .zip
 
 ### UWP Bundles
 ```
-Supported extensions: .appxbundle, appxupload or .zip
+Supported extensions: .appxbundle, .appxupload, .msixbundle, .msixupload or .zip
 ```
 
-> For .appxbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle manifest and metadata
+> For .appxbundle or .msixbundle app packages, the manifest is checked for the correct name of the appx subpackage. If it is found, the metadata is parsed directly from there, otherwise we scavenge for as much as we can get from the appxbundle/msixbundle manifest and metadata. We will only be supporting UWP apps with .msix extensions, despite them being universal
 
 | Property        | Description           |
 | ------------- |:--------------|
 | icon      |  |
 | iconName      |       |
-| languages      |Built from .appx language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
+| languages      |Built from .appx or .msix language files. Example- VLC_WinRT.WindowsPhone_1.8.4.0_language-en.appx  |
 
 ##### from Manifest:
 
@@ -118,7 +118,7 @@ Supported extensions: .appxbundle, appxupload or .zip
 | buildVersion      |Bundle.Identity.Version  |
 | minimumOsVersion      | Bundle.Prerequisites.OSMinVersion or Bundle.Dependencies.TargetDeviceFamily      |
 
-The assumption for zip and appxUpload is that the unziped folders will have the appx or appxbundle which we will then process as we do normally
+The assumption for zip, appxUpload, and msixUpload is that the unziped folders will have the appx/msix or appxbundle/msixbundle which we will then process as we do normally
 
 ## Prerequisites ##
 

@@ -53,5 +53,34 @@ describe("ZipContent", () => {
                 await subject.read(unzipPath, [packagePath, extraPath]);
             });
         });
+        context('zip contains msix subpackage', () => {
+            const unzipPath = `test/temp/${shortid.generate()}/UwpApp_1`;
+            beforeEach(() => {
+                copydir.sync("test/assets/UwpApp_1", unzipPath);
+            });
+            it("should extract", async () => {
+                const subject = new ZipContent();
+                await subject.read(unzipPath, ["test_x86.msix", "Dependencies/Microsoft.VCLibs.x64.14.00.appx"]);
+                should(subject.subPackage.displayName).eql("TestApp");
+                should(subject.subPackage.executableName).eql("TestApp.exe");
+                should(subject.subPackage.languages).eql(["en-us"]);
+                should(subject.subPackage.minimumOsVersion).eql("10.0.17135.0");
+                should(subject.subPackage.buildVersion).eql("1.0.0.0");
+                should(subject.subPackage.version).eql("");
+                should(subject.subPackage.uniqueIdentifier).eql("72dd8124-f57b-4118-8b47-9900db69752c");
+            });
+        });
+        context('zip contains msixbundle subpackage', () => {
+            const unzipPath = `test/temp/${shortid.generate()}/UwpApp_1`;
+            beforeEach(() => {
+                copydir.sync("test/assets/UwpApp_1", unzipPath);
+            });
+            it("should extract", async () => {
+                const subject = new ZipContent();
+                const packagePath = "test.msixbundle";
+                const extraPath = "Dependencies/Microsoft.VCLibs.x64.14.00.appx";
+                await subject.read(unzipPath, [packagePath, extraPath]);
+            });
+        });
     });
 });

@@ -2,8 +2,11 @@ export class Constants {
     public static APK = "apk";
     public static IPA = "ipa";
     public static APPX = "appx";
+    public static MSIX = "msix";
     public static APPXBUNDLE = "appxbundle";
     public static APPXUPLOAD = "appxupload";
+    public static MSIXBUNDLE = "msixbundle";
+    public static MSIXUPLOAD = "msixupload";
     public static ZIP = "zip";
     public static DMG = "dmg";
     public static PROVISION_START = "<?xml version";
@@ -19,5 +22,6 @@ export class Constants {
     public static IOS_FILES = ["icon", "logo", Constants.INFO_PLIST, "2x", "3x", "provision", "embedded", Constants.ITUNES_PLIST.toLowerCase(), "default"];
     public static GENERAL_FILES = ["icon", "logo", "manifest", ".png"];
     public static APPX_FILES = ["icon", "logo", "manifest", ".appx", ".png"];
-    public static UWP_EXTENSIONS = [".zip", ".appx", ".appxbundle", ".appxupload"];
+    public static MSIX_FILES = ["icon", "logo", "manifest", ".msix", ".png"];
+    public static UWP_EXTENSIONS = [".zip", ".appx", ".appxbundle", ".appxupload", ".msix", ".msixbundle", ".msixupload"];
 }
