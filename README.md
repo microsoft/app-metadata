@@ -2,6 +2,8 @@
 
 # Description
 
+**This package has been deprecated, and is not being maintained by MSFT anymore.**
+
 This library helps you retrieve the most frequently extracted metadata and icons within iOS, Android and UWP applications.
 
 ## Usage 
